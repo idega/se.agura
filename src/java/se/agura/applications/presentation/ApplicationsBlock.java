@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBlock.java,v 1.1 2004/12/08 16:02:34 laddi Exp $
+ * $Id: ApplicationsBlock.java,v 1.2 2005/01/05 13:20:23 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -24,13 +24,17 @@ import com.idega.presentation.IWContext;
 import com.idega.presentation.Table;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
+import com.idega.presentation.ui.CheckBox;
+import com.idega.presentation.ui.GenericButton;
+import com.idega.presentation.ui.InterfaceObject;
+import com.idega.presentation.ui.RadioButton;
 
 
 /**
- * Last modified: $Date: 2004/12/08 16:02:34 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/05 13:20:23 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public abstract class ApplicationsBlock extends Block {
 
@@ -40,11 +44,16 @@ public abstract class ApplicationsBlock extends Block {
 	private IWResourceBundle iwrb;
 	
 	protected String iTextStyleClass;
+	protected String iErrorTextStyleClass;
 	protected String iLinkStyleClass;
 	protected String iHeaderStyleClass;
+	private String iInputStyleClass;
+	private String iButtonStyleClass;
+	private String iRadioStyleClass;
 	
 	protected String iWidth = Table.HUNDRED_PERCENT;
 	protected int iCellpadding = 3;
+	protected int iHeaderColumnWidth = 150;
 
 	public void main(IWContext iwc) {
 		iwb = getBundle(iwc);
@@ -89,12 +98,48 @@ public abstract class ApplicationsBlock extends Block {
 		return text;
 	}
 	
+	protected Text getErrorText(String string) {
+		Text text = new Text(string);
+		if (iErrorTextStyleClass != null) {
+			text.setStyleClass(iErrorTextStyleClass);
+		}
+		return text;
+	}
+	
 	protected Link getLink(String string) {
 		Link link = new Link(string);
 		if (iLinkStyleClass != null) {
 			link.setStyleClass(iLinkStyleClass);
 		}
 		return link;
+	}
+	
+	protected InterfaceObject getInput(InterfaceObject input) {
+		if (iInputStyleClass != null) {
+			input.setStyleClass(iInputStyleClass);
+		}
+		return input;
+	}
+	
+	protected GenericButton getButton(GenericButton button) {
+		if (iButtonStyleClass != null) {
+			button.setStyleClass(iButtonStyleClass);
+		}
+		return button;
+	}
+	
+	protected RadioButton getRadioButton(RadioButton radioButton) {
+		if (iRadioStyleClass != null) {
+			radioButton.setStyleClass(iRadioStyleClass);
+		}
+		return radioButton;
+	}
+	
+	protected CheckBox getCheckBox(CheckBox checkBox) {
+		if (iRadioStyleClass != null) {
+			checkBox.setStyleClass(iRadioStyleClass);
+		}
+		return checkBox;
 	}
 	
 	/* (non-Javadoc)
@@ -149,5 +194,25 @@ public abstract class ApplicationsBlock extends Block {
 	 */
 	public void setWidth(String width) {
 		iWidth = width;
+	}
+	
+	public void setErrorTextStyleClass(String errorTextStyleClass) {
+		iErrorTextStyleClass = errorTextStyleClass;
+	}
+	
+	public void setInputStyleClass(String inputStyleClass) {
+		iInputStyleClass = inputStyleClass;
+	}
+	
+	public void setRadioStyleClass(String radioStyleClass) {
+		iRadioStyleClass = radioStyleClass;
+	}
+	
+	public void setButtonStyleClass(String buttonStyleClass) {
+		iButtonStyleClass = buttonStyleClass;
+	}
+	
+	public void setHeaderColumnWidth(int headerColumnWidth) {
+		iHeaderColumnWidth = headerColumnWidth;
 	}
 }
