@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBusinessBean.java,v 1.3 2004/12/13 23:49:55 laddi Exp $
+ * $Id: ApplicationsBusinessBean.java,v 1.4 2004/12/21 14:02:18 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -14,6 +14,8 @@ import java.util.Collection;
 
 import javax.ejb.FinderException;
 
+import se.agura.AguraConstants;
+
 import com.idega.block.process.business.CaseBusinessBean;
 import com.idega.data.IDOException;
 import com.idega.user.data.Group;
@@ -21,10 +23,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2004/12/13 23:49:55 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/21 14:02:18 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ApplicationsBusinessBean extends CaseBusinessBean implements ApplicationsBusiness {
 
@@ -151,5 +153,19 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 	
 	public String getViewTypeInactive() {
 		return VIEW_INACTIVE;
+	}
+	
+	public Group getUserParish(User user) {
+		return getParish(user.getPrimaryGroup());
+	}
+	
+	private Group getParish(Group group) {
+		if (group != null) {
+			if (group.getGroupType().equals(AguraConstants.GROUP_TYPE_PARISH)) {
+				return group;
+			}
+			return getParish((Group) group.getParentNode());
+		}
+		return null;
 	}
 }
