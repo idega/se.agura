@@ -1,5 +1,5 @@
 /*
- * $Id: UserDelegation.java,v 1.5 2005/01/19 21:37:54 laddi Exp $
+ * $Id: UserDelegation.java,v 1.6 2005/02/10 13:17:11 anna Exp $
  * Created on 19.1.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -34,10 +34,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/01/19 21:37:54 $ by $Author: laddi $
+ * Last modified: $Date: 2005/02/10 13:17:11 $ by $Author: anna $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class UserDelegation extends ApplicationsBlock {
 
@@ -82,6 +82,7 @@ public class UserDelegation extends ApplicationsBlock {
 					}
 					else {
 						submit = (SubmitButton) getButton(new SubmitButton(getResourceBundle().getLocalizedString("delegate", "Delegate")));
+						submit.setSubmitConfirm(getResourceBundle().getLocalizedString("user.delegation.delegate.popup","Are you sure you want to delegate your access authority to this person?"));
 					}
 					form.add(submit);
 					add(form);
