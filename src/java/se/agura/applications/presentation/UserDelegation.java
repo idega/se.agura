@@ -1,5 +1,5 @@
 /*
- * $Id: UserDelegation.java,v 1.3 2005/01/19 20:32:07 laddi Exp $
+ * $Id: UserDelegation.java,v 1.4 2005/01/19 20:33:04 laddi Exp $
  * Created on 19.1.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -34,10 +34,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/01/19 20:32:07 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/19 20:33:04 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class UserDelegation extends ApplicationsBlock {
 
@@ -71,7 +71,7 @@ public class UserDelegation extends ApplicationsBlock {
 						}
 
 						form.add(getHeader(getResourceBundle().getLocalizedString("substitutes", "Substitutes")));
-						form.add(new Break(2));
+						form.add(new Break());
 						form.add(getUserTable(users, group));
 						form.add(new Break());
 					}
