@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.2 2004/12/09 13:43:38 laddi Exp $
+ * $Id: UserCases.java,v 1.3 2004/12/09 14:04:12 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -37,10 +37,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2004/12/09 13:43:38 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/09 14:04:12 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class UserCases extends ApplicationsBlock implements IWPageEventListener {
 
@@ -247,5 +247,19 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 	 */
 	public void setNumberOfEntries(int numberOfEntries) {
 		iNumberOfEntries = numberOfEntries;
+	}
+	
+	/**
+	 * @param headerRowStyleClass The headerRowStyleClass to set.
+	 */
+	public void setHeaderRowStyleClass(String headerRowStyleClass) {
+		iHeaderRowStyleClass = headerRowStyleClass;
+	}
+	
+	/**
+	 * @param textRowStyleClass The textRowStyleClass to set.
+	 */
+	public void setTextRowStyleClass(String textRowStyleClass) {
+		iTextRowStyleClass = textRowStyleClass;
 	}
 }
