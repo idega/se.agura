@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.6 2004/12/21 14:04:43 laddi Exp $
+ * $Id: UserCases.java,v 1.7 2005/01/19 09:18:19 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -36,10 +36,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2004/12/21 14:04:43 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/19 09:18:19 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class UserCases extends ApplicationsBlock implements IWPageEventListener {
 
@@ -55,9 +55,11 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 	 * @see se.agura.applications.presentation.ApplicationsBlock#present(com.idega.presentation.IWContext)
 	 */
 	public void present(IWContext iwc) {
-		add(getStatusNavigator(iwc));
-		add(new Break());
-		add(getCaseTable(iwc));
+		if (iwc.isLoggedOn()) {
+			add(getStatusNavigator(iwc));
+			add(new Break());
+			add(getCaseTable(iwc));
+		}
 	}
 	
 	protected Table getCaseTable(IWContext iwc) {
@@ -135,7 +137,7 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 		return outerTable;
 	}
 	
-	private Table getStatusNavigator(IWContext iwc) {
+	protected Table getStatusNavigator(IWContext iwc) {
 		Table table = new Table(1, 1);
 		table.setCellpaddingAndCellspacing(0);
 		

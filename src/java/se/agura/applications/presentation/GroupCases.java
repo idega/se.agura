@@ -1,5 +1,5 @@
 /*
- * $Id: GroupCases.java,v 1.6 2005/01/13 14:43:57 laddi Exp $
+ * $Id: GroupCases.java,v 1.7 2005/01/19 09:18:19 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -14,6 +14,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import se.agura.AguraConstants;
+
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.CaseCodeManager;
 import com.idega.block.process.data.Case;
@@ -23,20 +25,40 @@ import com.idega.core.builder.data.ICPage;
 import com.idega.presentation.CollectionNavigator;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Table;
+import com.idega.presentation.text.Break;
 import com.idega.presentation.text.Link;
+import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 
 
 
 /**
- * Last modified: $Date: 2005/01/13 14:43:57 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/19 09:18:19 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class GroupCases extends UserCases {
 
+	/* (non-Javadoc)
+	 * @see se.agura.applications.presentation.ApplicationsBlock#present(com.idega.presentation.IWContext)
+	 */
+	public void present(IWContext iwc) {
+		if (iwc.isLoggedOn()) {
+			User user = iwc.getCurrentUser();
+			Group parent = (Group) user.getParentNode();
+			
+			if (!parent.getGroupType().equals(AguraConstants.GROUP_TYPE_EMPLOYEES)) {
+				add(getResourceBundle().getLocalizedString("applications.group_cases", "Group cases"));
+				add(new Break(2));
+				add(getStatusNavigator(iwc));
+				add(new Break());
+				add(getCaseTable(iwc));
+			}
+		}
+	}
+	
 	protected Table getCaseTable(IWContext iwc) {
 		CollectionNavigator navigator = getCollectionNavigator(iwc);
 		int startingEntry = navigator.getStart(iwc);
