@@ -43,10 +43,8 @@ public class UserAccountPreferences extends ApplicationsBlock {
 
 	private final static int ACTION_VIEW_FORM = 1;
 	private final static int ACTION_FORM_SUBMIT = 2;
-	private final static int ACTION_CANCEL = 3;
 
 	private final static String PARAMETER_FORM_SUBMIT = "cap_sbmt";
-	private final static String PARAMETER_CANCEL = "cap_cncl";
 	private final static String PARAMETER_NEW_PASSWORD = "cap_n_pw";
 	private final static String PARAMETER_NEW_PASSWORD_REPEATED = "cap_n_pw_r";
 	private final static String PARAMETER_EMAIL = "cap_email";
@@ -107,9 +105,6 @@ public class UserAccountPreferences extends ApplicationsBlock {
 				case ACTION_FORM_SUBMIT:
 					updatePreferences(iwc);
 					break;
-				case ACTION_CANCEL:
-					viewPreferencesForm(iwc);
-					break;
 			}
 		}
 		catch (Exception e) {
@@ -122,9 +117,6 @@ public class UserAccountPreferences extends ApplicationsBlock {
 
 		if (iwc.isParameterSet(PARAMETER_FORM_SUBMIT)) {
 			action = ACTION_FORM_SUBMIT;
-		}
-		else if (iwc.isParameterSet(PARAMETER_CANCEL)) {
-			action = ACTION_CANCEL;
 		}
 
 		return action;
