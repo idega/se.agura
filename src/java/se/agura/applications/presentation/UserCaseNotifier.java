@@ -1,5 +1,5 @@
 /*
- * $Id: UserCaseNotifier.java,v 1.1 2005/01/05 07:32:15 laddi Exp $
+ * $Id: UserCaseNotifier.java,v 1.2 2005/01/11 10:04:25 laddi Exp $
  * Created on 13.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -29,10 +29,10 @@ import com.idega.presentation.text.Link;
 
 
 /**
- * Last modified: $Date: 2005/01/05 07:32:15 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/11 10:04:25 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class UserCaseNotifier extends ApplicationsBlock {
 
@@ -53,6 +53,9 @@ public class UserCaseNotifier extends ApplicationsBlock {
 		if (numberOfCases > 0) {
 			showNotifier(iwc);
 		}
+		else {
+			add(getText(getResourceBundle().getLocalizedString("case_notifier.no_cases_with_changed_status", "No status changes on your ongoing errands.")));
+		}
 	}
 	
 	public void showNotifier(IWContext iwc) {
@@ -70,40 +73,35 @@ public class UserCaseNotifier extends ApplicationsBlock {
 			throw new IBORuntimeException(re);
 		}
 		
-		if (cases.size() > 0) {
-			table.setCellpadding(iCellpadding);
-			Iterator iter = cases.iterator();
-			while (iter.hasNext()) {
-				Case element = (Case) iter.next();
-				try {
-					CaseCode code = element.getCaseCode();
-					CaseStatus status = element.getCaseStatus();
-					CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(code, iwc);
-					
-					ICPage page = getPage(code.getCode());
-					if (page != null) {
-						Link link = getLink(getResourceBundle().getLocalizedString("case_notifier." + code.getCode() + "." + status.getStatus(), "Your application for " + code.getDescription() + " has been " + status.getDescription()));
-						String parameter = caseBusiness.getPrimaryKeyParameter();
-						if (parameter != null) {
-							link.addParameter(parameter, element.getPrimaryKey().toString());
-						}
-						link.setPage(page);
-
-						table.add(link, 1, row++);
+		table.setCellpadding(iCellpadding);
+		Iterator iter = cases.iterator();
+		while (iter.hasNext()) {
+			Case element = (Case) iter.next();
+			try {
+				CaseCode code = element.getCaseCode();
+				CaseStatus status = element.getCaseStatus();
+				CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(code, iwc);
+				
+				ICPage page = getPage(code.getCode());
+				if (page != null) {
+					Link link = getLink(getResourceBundle().getLocalizedString("case_notifier." + code.getCode() + "." + status.getStatus(), "Your application for " + code.getDescription() + " has been " + status.getDescription()));
+					String parameter = caseBusiness.getPrimaryKeyParameter();
+					if (parameter != null) {
+						link.addParameter(parameter, element.getPrimaryKey().toString());
 					}
-				}
-				catch (IBOLookupException ile) {
-					log(ile);
-				}
-				catch (RemoteException re) {
-					log(re);
+					link.setPage(page);
+
+					table.add(link, 1, row++);
 				}
 			}
-			table.setCellpaddingLeft(1, 0);
+			catch (IBOLookupException ile) {
+				log(ile);
+			}
+			catch (RemoteException re) {
+				log(re);
+			}
 		}
-		else {
-			table.add(getText(getResourceBundle().getLocalizedString("case_notifier.no_cases_with_changed_status", "No status changes on you ongoing errands.")), 1, row);
-		}
+		table.setCellpaddingLeft(1, 0);
 		
 		add(table);
 	}

@@ -23,20 +23,8 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.EmailValidator;
 
-/*
- * import com.idega.presentation.ExceptionWrapper; import
- * com.idega.presentation.IWContext; import com.idega.presentation.*; import
- * com.idega.presentation.ui.*; import com.idega.core.data.Address; import
- * com.idega.core.data.Email; import com.idega.user.data.*; import
- * com.idega.business.IBOLookup; import com.idega.user.business.UserBusiness;
- * 
- * import se.idega.idegaweb.commune.presentation.CommuneBlock;
- */
-
 /**
- * Title: Description: Copyright: Copyright (c) 2002 Company:
- * 
- * @author Anders Lindman
+ * @author Laddi
  * @version 1.0
  */
 public class UserAccountPreferences extends ApplicationsBlock {
@@ -84,7 +72,6 @@ public class UserAccountPreferences extends ApplicationsBlock {
 
 	public static final String CITIZEN_ACCOUNT_PREFERENCES_PROPERTIES = "citizen_account_preferences";
 
-	private User user = null;
 	private Image iButtonImage;
 
 	public UserAccountPreferences() {
@@ -94,7 +81,6 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		if (!iwc.isLoggedOn()) {
 			return;
 		}
-		this.user = iwc.getCurrentUser();
 
 		try {
 			int action = parseAction(iwc);
@@ -127,6 +113,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 	}
 
 	private void drawForm(IWContext iwc) throws RemoteException {
+		User user = iwc.getCurrentUser();
 		Form form = new Form();
 		
 		Table table = new Table();
@@ -158,10 +145,6 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		row++;
 
 		String valueEmail = iwc.getParameter(PARAMETER_EMAIL);
-		/*
-		 * if the entered address is invalid show the orignal from database if
-		 * exists
-		 */
 		boolean isLegalEmail = false;
 		if (valueEmail != null) {
 			isLegalEmail = EmailValidator.getInstance().validateEmail(valueEmail);
@@ -273,6 +256,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 	}
 
 	private void updatePreferences(IWContext iwc) throws Exception {
+		User user = iwc.getCurrentUser();
 		LoginTable loginTable = LoginDBHandler.getUserLogin(((Integer) user.getPrimaryKey()).intValue());
 		String login = loginTable.getUserLogin();
 		String newPassword1 = iwc.getParameter(PARAMETER_NEW_PASSWORD);
@@ -286,7 +270,6 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		boolean updateEmail = false;
 
 		try {
-
 			// Validate new password
 			if (!newPassword1.equals("") || !newPassword2.equals("")) {
 				if (newPassword1.equals("")) {
@@ -331,7 +314,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		}
 
 		if (errorMessage != null) {
-			add(getErrorText(" " + errorMessage));
+			getParentPage().setAlertOnLoad(errorMessage);
 		}
 		else {
 			// Ok to update preferences
