@@ -1,5 +1,5 @@
 /*
- * $Id: GroupCases.java,v 1.5 2005/01/12 10:00:13 laddi Exp $
+ * $Id: GroupCases.java,v 1.6 2005/01/13 14:43:57 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -30,10 +30,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/01/12 10:00:13 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/13 14:43:57 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class GroupCases extends UserCases {
 
@@ -126,7 +126,7 @@ public class GroupCases extends UserCases {
 	protected Collection getCases(IWContext iwc, int startingEntry) {
 		try {
 			User user = iwc.getCurrentUser();
-			Collection groups = getUserBusiness(iwc).getUserGroups(user);
+			Collection groups = getUserBusiness(iwc).getUserGroupsDirectlyRelated(user);
 			if (groups != null) {
 				return getBusiness(iwc).getGroupCases(groups, getSession(iwc).getViewType(), startingEntry, iNumberOfEntries);
 			}
@@ -141,7 +141,7 @@ public class GroupCases extends UserCases {
 	protected int getCaseCount(IWContext iwc) {
 		try {
 			User user = iwc.getCurrentUser();
-			Collection groups = getUserBusiness(iwc).getUserGroups(user);
+			Collection groups = getUserBusiness(iwc).getUserGroupsDirectlyRelated(user);
 			if (groups != null) {
 				return getBusiness(iwc).getNumberOfGroupCases(groups, getSession(iwc).getViewType());
 			}
