@@ -140,7 +140,6 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		Table table = new Table();
 		table.setCellpadding(iCellpadding);
 		table.setCellspacing(0);
-		table.setBorder(1);
 		form.add(table);
 		int row = 1;
 
