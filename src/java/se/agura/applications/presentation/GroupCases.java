@@ -1,5 +1,5 @@
 /*
- * $Id: GroupCases.java,v 1.9 2005/01/19 20:26:01 laddi Exp $
+ * $Id: GroupCases.java,v 1.10 2005/02/14 14:01:16 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -35,10 +35,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/01/19 20:26:01 $ by $Author: laddi $
+ * Last modified: $Date: 2005/02/14 14:01:16 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class GroupCases extends UserCases {
 	
@@ -52,7 +52,7 @@ public class GroupCases extends UserCases {
 			User user = iwc.getCurrentUser();
 			Group parent = user.getPrimaryGroup();
 			
-			if (parent != null && !parent.getGroupType().equals(AguraConstants.GROUP_TYPE_EMPLOYEES)) {
+			if (parent != null && !parent.getGroupType().equals(AguraConstants.GROUP_TYPE_EMPLOYEES) && !parent.getGroupType().equals(AguraConstants.GROUP_TYPE_SUBSTITUTES)) {
 				Text headline = new Text(getResourceBundle().getLocalizedString("applications.group_cases", "Group cases"));
 				if (iHeadlineStyleClass != null) {
 					headline.setStyleClass(iHeadlineStyleClass);
