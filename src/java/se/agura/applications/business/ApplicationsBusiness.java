@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBusiness.java,v 1.5 2005/02/14 10:57:56 laddi Exp $
+ * $Id: ApplicationsBusiness.java,v 1.6 2005/03/20 11:02:29 eiki Exp $
  * Created on 14.2.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -17,10 +17,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2005/02/14 10:57:56 $ by $Author: laddi $
+ * Last modified: $Date: 2005/03/20 11:02:29 $ by $Author: eiki $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public interface ApplicationsBusiness extends CaseBusiness {
 
@@ -73,5 +73,10 @@ public interface ApplicationsBusiness extends CaseBusiness {
 	 * @see se.agura.applications.business.ApplicationsBusinessBean#getUserParish
 	 */
 	public Group getUserParish(User user) throws java.rmi.RemoteException;
+
+	/**
+	 * @see se.agura.applications.business.ApplicationsBusinessBean#getParishes
+	 */
+	public Collection getParishes() throws java.rmi.RemoteException;
 
 }

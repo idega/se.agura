@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBusinessBean.java,v 1.9 2005/02/23 08:49:46 laddi Exp $
+ * $Id: ApplicationsBusinessBean.java,v 1.10 2005/03/20 11:02:29 eiki Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -14,27 +14,24 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
 import javax.ejb.FinderException;
-
 import se.agura.AguraConstants;
-
 import com.idega.block.process.business.CaseBusinessBean;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.data.IDOException;
 import com.idega.idegaweb.IWBundle;
+import com.idega.user.business.GroupBusiness;
 import com.idega.user.business.UserBusiness;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
-
 /**
- * Last modified: $Date: 2005/02/23 08:49:46 $ by $Author: laddi $
+ * Last modified: $Date: 2005/03/20 11:02:29 $ by $Author: eiki $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class ApplicationsBusinessBean extends CaseBusinessBean implements ApplicationsBusiness {
 
@@ -190,7 +187,8 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 	public Group getUserParish(User user) {
 		try {
 			String[] groupTypes = { AguraConstants.GROUP_TYPE_PARISH, AguraConstants.GROUP_TYPE_PARISH_OFFICE };
-			Collection groups = getUserBusiness().getGroupBusiness().getParentGroupsRecursive(user, groupTypes, true);
+
+			Collection groups = getGroupBusiness().getParentGroupsRecursive(user,groupTypes,true);
 			if (groups != null) {
 				Iterator iter = groups.iterator();
 				while (iter.hasNext()) {
@@ -204,9 +202,28 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 		return user.getPrimaryGroup();
 	}
 	
+	public Collection getParishes() {
+		try {
+			String[] types = { AguraConstants.GROUP_TYPE_PARISH, AguraConstants.GROUP_TYPE_PARISH_OFFICE };
+			return getGroupBusiness().getGroups(types,true);
+		}
+		catch (Exception e) {
+			throw new IBORuntimeException(e);
+		}
+	}
+	
 	protected UserBusiness getUserBusiness() {
 		try {
 			return (UserBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), UserBusiness.class);
+		}
+		catch (IBOLookupException ible) {
+			throw new IBORuntimeException(ible);
+		}
+	}
+	
+	protected GroupBusiness getGroupBusiness() {
+		try {
+			return (GroupBusiness) IBOLookup.getServiceInstance(getIWApplicationContext(), GroupBusiness.class);
 		}
 		catch (IBOLookupException ible) {
 			throw new IBORuntimeException(ible);
