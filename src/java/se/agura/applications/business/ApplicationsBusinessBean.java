@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBusinessBean.java,v 1.8 2005/02/17 18:58:11 laddi Exp $
+ * $Id: ApplicationsBusinessBean.java,v 1.9 2005/02/23 08:49:46 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -31,10 +31,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2005/02/17 18:58:11 $ by $Author: laddi $
+ * Last modified: $Date: 2005/02/23 08:49:46 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class ApplicationsBusinessBean extends CaseBusinessBean implements ApplicationsBusiness {
 
@@ -236,7 +236,8 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 			}
 		}
 		catch (javax.mail.MessagingException me) {
-			System.err.println("Error sending mail to address: " + email + " Message was: " + me.getMessage());
+			System.err.println("Error sending mail to address: " + email);
+			me.printStackTrace(System.err);
 		}
 	}
 }
