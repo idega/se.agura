@@ -169,7 +169,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		
 		
 		UserStatusBusiness usBiz = getUserStatusBusiness();
-		Collection col = usBiz.getAllUserStatuses(user.getID());
+		Collection col = usBiz.getAllUserStatuses(((Integer) user.getPrimaryKey()).intValue());
 		UserStatusDropdown statusDropdown = new UserStatusDropdown(PARAMETER_USER_STATUS);
 		if(col!=null && !col.isEmpty()){
 			//basic gets the first one...this should be a multiple selection box
@@ -344,7 +344,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		
 		if(profession!=null && !UserStatusDropdown.NO_STATUS_KEY.equals(profession)){
 			try {
-				getUserStatusBusiness().setUserGroupStatus(user.getID(),user.getPrimaryGroupID(),Integer.parseInt(profession));
+				getUserStatusBusiness().setUserGroupStatus(((Integer) user.getPrimaryKey()).intValue(),user.getPrimaryGroupID(),Integer.parseInt(profession));
 			}
 			catch (Exception e1) {
 				e1.printStackTrace();
