@@ -1,0 +1,12 @@
+applications.active_cases=Aktiva \u00E4renden
+applications.date=Datum
+applications.handler=Behandlas av
+applications.no_cases_found=Det finns inga \u00E4renden
+applications.nr=Nr.
+applications.status=Status
+applications.type=Typ
+applications.user=Anv\u00E4ndare
+case_code_key.VACATIN=Ledighetsans\u00F6kan\: {0}
+case_status_key.UBEH=Under behandling
+favorite.inactive_cases=Avslutade \u00E4renden
+vacation_type.compensation=Kompensationsledighet
