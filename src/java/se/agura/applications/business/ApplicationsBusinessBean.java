@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBusinessBean.java,v 1.7 2005/02/14 10:57:56 laddi Exp $
+ * $Id: ApplicationsBusinessBean.java,v 1.8 2005/02/17 18:58:11 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -9,6 +9,7 @@
  */
 package se.agura.applications.business;
 
+import java.io.File;
 import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
@@ -23,16 +24,17 @@ import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.data.IDOException;
+import com.idega.idegaweb.IWBundle;
 import com.idega.user.business.UserBusiness;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2005/02/14 10:57:56 $ by $Author: laddi $
+ * Last modified: $Date: 2005/02/17 18:58:11 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ApplicationsBusinessBean extends CaseBusinessBean implements ApplicationsBusiness {
 
@@ -41,6 +43,11 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 	private static final String VIEW_ACTIVE = "app_active";
 	private static final String VIEW_INACTIVE = "app_inactive";
 	
+	private static String DEFAULT_SMTP_MAILSERVER = "mail.agurait.com";
+	private static String PROP_SYSTEM_SMTP_MAILSERVER = "messagebox_smtp_mailserver";
+	private static String PROP_MESSAGEBOX_FROM_ADDRESS = "messagebox_from_mailaddress";
+	private static String DEFAULT_MESSAGEBOX_FROM_ADDRESS = "no-reply@aguraintra.se";
+
 	protected String getBundleIdentifier() {
 		return IW_BUNDLE_IDENTIFIER;
 	}
@@ -203,6 +210,33 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 		}
 		catch (IBOLookupException ible) {
 			throw new IBORuntimeException(ible);
+		}
+	}
+
+	protected void sendMessage(String email, String cc, String subject, String body, File attachment) {
+		String receiver = email.trim();
+		String mailServer = DEFAULT_SMTP_MAILSERVER;
+		String fromAddress = DEFAULT_MESSAGEBOX_FROM_ADDRESS;
+		try {
+			IWBundle iwb = getIWApplicationContext().getIWMainApplication().getBundle(IW_BUNDLE_IDENTIFIER);
+			mailServer = iwb.getProperty(PROP_SYSTEM_SMTP_MAILSERVER, DEFAULT_SMTP_MAILSERVER);
+			fromAddress = iwb.getProperty(PROP_MESSAGEBOX_FROM_ADDRESS, DEFAULT_MESSAGEBOX_FROM_ADDRESS);
+		}
+		catch (Exception e) {
+			System.err.println("MessageBusinessBean: Error getting mail property from bundle");
+			e.printStackTrace();
+		}
+
+		try {
+			if (attachment == null) {
+				com.idega.util.SendMail.send(fromAddress, receiver, cc != null ? cc : "", "", mailServer, subject, body);
+			}
+			else {
+				com.idega.util.SendMail.send(fromAddress, receiver, cc != null ? cc : "", "", mailServer, subject, body, attachment);
+			}
+		}
+		catch (javax.mail.MessagingException me) {
+			System.err.println("Error sending mail to address: " + email + " Message was: " + me.getMessage());
 		}
 	}
 }
