@@ -1,5 +1,5 @@
 /*
- * $Id: UserDelegation.java,v 1.7 2005/02/11 09:07:11 anna Exp $
+ * $Id: UserDelegation.java,v 1.8 2005/02/14 13:58:42 laddi Exp $
  * Created on 19.1.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -34,10 +34,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/02/11 09:07:11 $ by $Author: anna $
+ * Last modified: $Date: 2005/02/14 13:58:42 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class UserDelegation extends ApplicationsBlock {
 
@@ -67,7 +67,7 @@ public class UserDelegation extends ApplicationsBlock {
 						Collection users = new TreeSet();
 						Iterator iter = substitutes.iterator();
 						while (iter.hasNext()) {
-							users.addAll(getUserBusiness(iwc).getUsersInPrimaryGroup((Group) iter.next()));
+							users.addAll(getUserBusiness(iwc).getUsersInGroup((Group) iter.next()));
 						}
 
 						form.add(getHeader(getResourceBundle().getLocalizedString("substitutes", "Substitutes")));
