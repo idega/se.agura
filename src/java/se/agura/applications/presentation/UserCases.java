@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.1 2004/12/08 16:02:34 laddi Exp $
+ * $Id: UserCases.java,v 1.2 2004/12/09 13:43:38 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -16,7 +16,11 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
 
+import com.idega.block.process.business.CaseBusiness;
+import com.idega.block.process.business.CaseCodeManager;
 import com.idega.block.process.data.Case;
+import com.idega.block.process.data.CaseStatus;
+import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
 import com.idega.core.builder.data.ICPage;
 import com.idega.event.IWPageEventListener;
@@ -33,17 +37,16 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2004/12/08 16:02:34 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/09 13:43:38 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class UserCases extends ApplicationsBlock implements IWPageEventListener {
 
 	private static final String PARAMETER_VIEW_TYPE = "app_view_type";
 	
 	private Map pageMap;
-	private Map parameterMap;
 	protected int iNumberOfEntries = 10;
 	
 	protected String iHeaderRowStyleClass;
@@ -81,41 +84,51 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 		Collection cases = getCases(iwc, startingEntry);
 		Iterator iter = cases.iterator();
 		while (iter.hasNext()) {
-			row++;
-			column = 1;
-			
-			Case element = (Case) iter.next();
-			Group handler = element.getHandler();
-			IWTimestamp created = new IWTimestamp(element.getCreated());
-			String code = element.getCode();
-			String status = element.getStatus();
-			
-			ICPage page = getPage(code, status);
-			if (page != null) {
-				Link link = getLink(element.getPrimaryKey().toString());
-				String parameter = getParameter(code);
-				if (parameter != null) {
-					link.addParameter(parameter, element.getPrimaryKey().toString());
+			try {
+				row++;
+				column = 1;
+				
+				Case element = (Case) iter.next();
+				Group handler = element.getHandler();
+				IWTimestamp created = new IWTimestamp(element.getCreated());
+				String code = element.getCode();
+				CaseStatus caseStatus = element.getCaseStatus();
+				String status = caseStatus.getStatus();
+				CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(element.getCaseCode(), iwc);
+				
+				ICPage page = getPage(code, status);
+				if (page != null) {
+					Link link = getLink(element.getPrimaryKey().toString());
+					String parameter = caseBusiness.getPrimaryKeyParameter();
+					if (parameter != null) {
+						link.addParameter(parameter, element.getPrimaryKey().toString());
+					}
+					link.setPage(page);
+					table.add(link, column++, row);
 				}
-				link.setPage(page);
-				table.add(link, column++, row);
+				else {
+					table.add(getText(element.getPrimaryKey().toString()), column++, row);
+				}
+				
+				table.add(getText(caseBusiness.getLocalizedCaseDescription(element, iwc.getCurrentLocale())), column++, row);
+				table.add(getText(created.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), column++, row);
+				if (handler != null) {
+					table.add(getText(handler.getName()), column++, row);
+				}
+				else {
+					table.add(getText("-"), column++, row);
+				}
+				table.add(getText(caseBusiness.getLocalizedCaseStatusDescription(caseStatus, iwc.getCurrentLocale())), column++, row);
+				
+				if (iTextRowStyleClass != null) {
+					table.setRowStyleClass(row, iTextRowStyleClass);
+				}
 			}
-			else {
-				table.add(getText(element.getPrimaryKey().toString()), column++, row);
+			catch (IBOLookupException ile) {
+				log(ile);
 			}
-			
-			table.add(getText(getResourceBundle().getLocalizedString("case_code."+code, code)), column++, row);
-			table.add(getText(created.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), column++, row);
-			if (handler != null) {
-				table.add(getText(handler.getName()), column++, row);
-			}
-			else {
-				table.add(getText("-"), column++, row);
-			}
-			table.add(getText(getResourceBundle().getLocalizedString("case_status."+status, status)), column++, row);
-			
-			if (iTextRowStyleClass != null) {
-				table.setRowStyleClass(row, iTextRowStyleClass);
+			catch (RemoteException re) {
+				log(re);
 			}
 		}
 		
@@ -202,13 +215,6 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 		return null;
 	}
 	
-	protected String getParameter(String caseCode) {
-		if (parameterMap != null) {
-			return (String) parameterMap.get(caseCode);
-		}
-		return null;
-	}
-	
 	public void setPage(String caseCode, String caseStatus, ICPage page) {
 		if (pageMap == null) {
 			pageMap = new HashMap();
@@ -222,14 +228,6 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 		pageMap.put(caseCode, statusMap);
 	}
 	
-	public void setParameter(String caseCode, String parameter) {
-		if (parameterMap == null) {
-			parameterMap = new HashMap();
-		}
-		
-		parameterMap.put(caseCode, parameter);
-	}
-
 	/* (non-Javadoc)
 	 * @see com.idega.event.IWPageEventListener#actionPerformed(com.idega.presentation.IWContext)
 	 */

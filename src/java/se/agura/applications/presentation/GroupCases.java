@@ -1,5 +1,5 @@
 /*
- * $Id: GroupCases.java,v 1.1 2004/12/08 16:02:34 laddi Exp $
+ * $Id: GroupCases.java,v 1.2 2004/12/09 13:43:38 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -14,7 +14,11 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
 
+import com.idega.block.process.business.CaseBusiness;
+import com.idega.block.process.business.CaseCodeManager;
 import com.idega.block.process.data.Case;
+import com.idega.block.process.data.CaseStatus;
+import com.idega.business.IBOLookupException;
 import com.idega.core.builder.data.ICPage;
 import com.idega.presentation.CollectionNavigator;
 import com.idega.presentation.IWContext;
@@ -27,10 +31,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2004/12/08 16:02:34 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/09 13:43:38 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class GroupCases extends UserCases {
 
@@ -58,36 +62,46 @@ public class GroupCases extends UserCases {
 			
 			Iterator iter = cases.iterator();
 			while (iter.hasNext()) {
-				row++;
-				column = 1;
-				
-				Case element = (Case) iter.next();
-				User owner = element.getOwner();
-				IWTimestamp created = new IWTimestamp(element.getCreated());
-				String code = element.getCode();
-				String status = element.getStatus();
-				
-				ICPage page = getPage(code, status);
-				if (page != null) {
-					Link link = getLink(element.getPrimaryKey().toString());
-					String parameter = getParameter(code);
-					if (parameter != null) {
-						link.addParameter(parameter, element.getPrimaryKey().toString());
+				try {
+					row++;
+					column = 1;
+					
+					Case element = (Case) iter.next();
+					User owner = element.getOwner();
+					IWTimestamp created = new IWTimestamp(element.getCreated());
+					String code = element.getCode();
+					CaseStatus caseStatus = element.getCaseStatus();
+					String status = caseStatus.getStatus();
+					CaseBusiness caseBusiness = CaseCodeManager.getInstance().getCaseBusinessOrDefault(element.getCaseCode(), iwc);
+					
+					ICPage page = getPage(code, status);
+					if (page != null) {
+						Link link = getLink(element.getPrimaryKey().toString());
+						String parameter = caseBusiness.getPrimaryKeyParameter();
+						if (parameter != null) {
+							link.addParameter(parameter, element.getPrimaryKey().toString());
+						}
+						link.setPage(page);
+						table.add(link, column++, row);
 					}
-					link.setPage(page);
-					table.add(link, column++, row);
+					else {
+						table.add(getText(element.getPrimaryKey().toString()), column++, row);
+					}
+					
+					table.add(getText(caseBusiness.getLocalizedCaseDescription(element, iwc.getCurrentLocale())), column++, row);
+					table.add(getText(owner.getName()), column++, row);
+					table.add(getText(created.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), column++, row);
+					table.add(getText(caseBusiness.getLocalizedCaseStatusDescription(caseStatus, iwc.getCurrentLocale())), column++, row);
+					
+					if (iTextRowStyleClass != null) {
+						table.setRowStyleClass(row, iTextRowStyleClass);
+					}
 				}
-				else {
-					table.add(getText(element.getPrimaryKey().toString()), column++, row);
+				catch (IBOLookupException ile) {
+					log(ile);
 				}
-				
-				table.add(getText(getResourceBundle().getLocalizedString("case_code."+code, code)), column++, row);
-				table.add(getText(owner.getName()), column++, row);
-				table.add(getText(created.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), column++, row);
-				table.add(getText(getResourceBundle().getLocalizedString("case_status."+status, status)), column++, row);
-				
-				if (iTextRowStyleClass != null) {
-					table.setRowStyleClass(row, iTextRowStyleClass);
+				catch (RemoteException re) {
+					log(re);
 				}
 			}
 			
@@ -132,5 +146,4 @@ public class GroupCases extends UserCases {
 			return 0;
 		}
 	}
-	
 }
