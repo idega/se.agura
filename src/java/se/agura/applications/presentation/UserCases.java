@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.4 2004/12/09 15:33:22 laddi Exp $
+ * $Id: UserCases.java,v 1.5 2004/12/13 23:49:55 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -36,10 +36,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2004/12/09 15:33:22 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/13 23:49:55 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class UserCases extends ApplicationsBlock implements IWPageEventListener {
 
@@ -90,11 +90,11 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 		Collection cases = getCases(iwc, startingEntry);
 		Iterator iter = cases.iterator();
 		while (iter.hasNext()) {
+			Case element = (Case) iter.next();
 			try {
 				row++;
 				column = 1;
 				
-				Case element = (Case) iter.next();
 				IWTimestamp created = new IWTimestamp(element.getCreated());
 				String code = element.getCode();
 				CaseStatus caseStatus = element.getCaseStatus();

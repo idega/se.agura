@@ -1,6 +1,6 @@
 /*
- * $Id: ApplicationsBusinessHome.java,v 1.1 2004/12/08 16:02:34 laddi Exp $
- * Created on 8.12.2004
+ * $Id: ApplicationsBusinessHome.java,v 1.2 2004/12/13 23:49:55 laddi Exp $
+ * Created on 13.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
  *
@@ -15,10 +15,10 @@ import com.idega.business.IBOHome;
 
 
 /**
- * Last modified: $Date: 2004/12/08 16:02:34 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/13 23:49:55 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public interface ApplicationsBusinessHome extends IBOHome {
 

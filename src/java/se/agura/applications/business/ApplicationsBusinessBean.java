@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBusinessBean.java,v 1.2 2004/12/09 15:41:03 laddi Exp $
+ * $Id: ApplicationsBusinessBean.java,v 1.3 2004/12/13 23:49:55 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -21,10 +21,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2004/12/09 15:41:03 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/13 23:49:55 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ApplicationsBusinessBean extends CaseBusinessBean implements ApplicationsBusiness {
 
@@ -37,14 +37,34 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 		return IW_BUNDLE_IDENTIFIER;
 	}
 
+	public Collection getNotifiableUserCases(User user) {
+		try {
+			String[] statuses = { getCaseStatusGranted().getStatus(), getCaseStatusDenied().getStatus() };
+			return getCaseHome().findAllCasesForUserByStatuses(user, statuses, -1, -1);
+		}
+		catch (FinderException fe) {
+			return new ArrayList();
+		}
+	}
+	
+	public int getNumberOfNotifiableUserCases(User user) {
+		try {
+			String[] statuses = { getCaseStatusGranted().getStatus(), getCaseStatusDenied().getStatus() };
+			return getCaseHome().getCountOfAllCasesForUserByStatuses(user, statuses);
+		}
+		catch (IDOException ie) {
+			return 0;
+		}
+	}
+	
 	public Collection getUserCases(User user, String viewType, int startingCase, int numberOfCases) {
 		try {
 			String[] statuses = null;
 			if (viewType.equals(getViewTypeActive())) {
-				statuses = getActiveCaseStatuses();
+				statuses = getActiveUserCaseStatuses();
 			}
 			else {
-				statuses = getInactiveCaseStatuses();
+				statuses = getInactiveUserCaseStatuses();
 			}
 			
 			return getCaseHome().findAllCasesForUserByStatuses(user, statuses, startingCase, numberOfCases);
@@ -58,10 +78,10 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 		try {
 			String[] statuses = null;
 			if (viewType.equals(getViewTypeActive())) {
-				statuses = getActiveCaseStatuses();
+				statuses = getActiveUserCaseStatuses();
 			}
 			else {
-				statuses = getInactiveCaseStatuses();
+				statuses = getInactiveUserCaseStatuses();
 			}
 			
 			return getCaseHome().getCountOfAllCasesForUserByStatuses(user, statuses);
@@ -75,10 +95,10 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 		try {
 			String[] statuses = null;
 			if (viewType.equals(getViewTypeActive())) {
-				statuses = getActiveCaseStatuses();
+				statuses = getActiveGroupCaseStatuses();
 			}
 			else {
-				statuses = getInactiveCaseStatuses();
+				statuses = getInactiveGroupCaseStatuses();
 			}
 			
 			return getCaseHome().findAllCasesForGroupByStatuses(group, statuses, startingCase, numberOfCases);
@@ -92,10 +112,10 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 		try {
 			String[] statuses = null;
 			if (viewType.equals(getViewTypeActive())) {
-				statuses = getActiveCaseStatuses();
+				statuses = getActiveGroupCaseStatuses();
 			}
 			else {
-				statuses = getInactiveCaseStatuses();
+				statuses = getInactiveGroupCaseStatuses();
 			}
 			
 			return getCaseHome().getCountOfAllCasesForGroupByStatuses(group, statuses);
@@ -105,13 +125,23 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 		}
 	}
 	
-	private String[] getActiveCaseStatuses() {
+	private String[] getActiveUserCaseStatuses() {
 		String[] statuses = { getCaseStatusGranted().getStatus(), getCaseStatusOpen().getStatus(), getCaseStatusDenied().getStatus(), getCaseStatusMoved().getStatus(), getCaseStatusReady().getStatus() };
 		return statuses;
 	}
 	
-	private String[] getInactiveCaseStatuses() {
+	private String[] getInactiveUserCaseStatuses() {
 		String[] statuses = { getCaseStatusInactive().getStatus() };
+		return statuses;
+	}
+	
+	private String[] getActiveGroupCaseStatuses() {
+		String[] statuses = { getCaseStatusOpen().getStatus(), getCaseStatusMoved().getStatus() };
+		return statuses;
+	}
+	
+	private String[] getInactiveGroupCaseStatuses() {
+		String[] statuses = { getCaseStatusDenied().getStatus(), getCaseStatusGranted().getStatus(), getCaseStatusInactive().getStatus(), getCaseStatusReady().getStatus() };
 		return statuses;
 	}
 	
