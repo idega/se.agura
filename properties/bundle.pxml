@@ -31,6 +31,32 @@
             </value>
             <type>map</type>
           </key>
+          <key>
+            <name>se.agura.applications.presentation.UserAccountPreferences</name>
+            <value>
+              <map>
+                <key>
+                  <name>component_property_file</name>
+                  <type>java.lang.String</type>
+                  <value>se.agura.applications.presentation.UserAccountPreferences.pxml</value>
+                </key>
+              </map>
+            </value>
+            <type>map</type>
+          </key>
+          <key>
+            <name>se.agura.applications.presentation.UserCaseNotifier</name>
+            <value>
+              <map>
+                <key>
+                  <name>component_property_file</name>
+                  <type>java.lang.String</type>
+                  <value>se.agura.applications.presentation.UserCaseNotifier.pxml</value>
+                </key>
+              </map>
+            </value>
+            <type>map</type>
+          </key>
         </map>
       </value>
       <type>map</type>
