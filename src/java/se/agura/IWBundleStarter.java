@@ -29,6 +29,7 @@ public class IWBundleStarter implements IWBundleStartable {
 	}
 
 	protected void insertStartData() {
+		insertGroupType(AguraConstants.GROUP_TYPE_PRIESTS);
 		insertGroupType(AguraConstants.GROUP_TYPE_ASSISTANTS);
 		insertGroupType(AguraConstants.GROUP_TYPE_EMPLOYEES);
 		insertGroupType(AguraConstants.GROUP_TYPE_MEETING);

@@ -1,5 +1,5 @@
 /*
- * $Id: AguraConstants.java,v 1.1 2004/12/06 20:14:51 laddi Exp $
+ * $Id: AguraConstants.java,v 1.2 2005/01/12 10:00:13 laddi Exp $
  * Created on 6.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -11,13 +11,14 @@ package se.agura;
 
 
 /**
- * Last modified: $Date: 2004/12/06 20:14:51 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/12 10:00:13 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class AguraConstants {
 
+	public static final String GROUP_TYPE_PRIESTS = "priests";
 	public static final String GROUP_TYPE_PARISH = "parish";
 	public static final String GROUP_TYPE_PARISH_OFFICE = "parish_office";
 	public static final String GROUP_TYPE_SUPERVISOR = "supervisor";

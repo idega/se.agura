@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBusinessBean.java,v 1.5 2004/12/21 15:11:17 laddi Exp $
+ * $Id: ApplicationsBusinessBean.java,v 1.6 2005/01/12 10:00:13 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -29,10 +29,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2004/12/21 15:11:17 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/12 10:00:13 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ApplicationsBusinessBean extends CaseBusinessBean implements ApplicationsBusiness {
 
@@ -99,7 +99,7 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 		}
 	}
 	
-	public Collection getGroupCases(Group group, String viewType, int startingCase, int numberOfCases) {
+	public Collection getGroupCases(Collection groups, String viewType, int startingCase, int numberOfCases) {
 		try {
 			String[] statuses = null;
 			if (viewType.equals(getViewTypeActive())) {
@@ -109,14 +109,14 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 				statuses = getInactiveGroupCaseStatuses();
 			}
 			
-			return getCaseHome().findAllCasesForGroupByStatuses(group, statuses, startingCase, numberOfCases);
+			return getCaseHome().findAllCasesForGroupsByStatuses(groups, statuses, startingCase, numberOfCases);
 		}
 		catch (FinderException fe) {
 			return new ArrayList();
 		}
 	}
 	
-	public int getNumberOfGroupCases(Group group, String viewType) {
+	public int getNumberOfGroupCases(Collection groups, String viewType) {
 		try {
 			String[] statuses = null;
 			if (viewType.equals(getViewTypeActive())) {
@@ -126,7 +126,7 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 				statuses = getInactiveGroupCaseStatuses();
 			}
 			
-			return getCaseHome().getCountOfAllCasesForGroupByStatuses(group, statuses);
+			return getCaseHome().getCountOfAllCasesForGroupsByStatuses(groups, statuses);
 		}
 		catch (IDOException fe) {
 			return 0;

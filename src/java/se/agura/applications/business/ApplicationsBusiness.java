@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBusiness.java,v 1.3 2004/12/21 14:02:18 laddi Exp $
+ * $Id: ApplicationsBusiness.java,v 1.4 2005/01/12 10:00:13 laddi Exp $
  * Created on 21.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -17,10 +17,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2004/12/21 14:02:18 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/12 10:00:13 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public interface ApplicationsBusiness extends CaseBusiness {
 
@@ -47,12 +47,12 @@ public interface ApplicationsBusiness extends CaseBusiness {
 	/**
 	 * @see se.agura.applications.business.ApplicationsBusinessBean#getGroupCases
 	 */
-	public Collection getGroupCases(Group group, String viewType, int startingCase, int numberOfCases) throws java.rmi.RemoteException;
+	public Collection getGroupCases(Collection groups, String viewType, int startingCase, int numberOfCases) throws java.rmi.RemoteException;
 
 	/**
 	 * @see se.agura.applications.business.ApplicationsBusinessBean#getNumberOfGroupCases
 	 */
-	public int getNumberOfGroupCases(Group group, String viewType) throws java.rmi.RemoteException;
+	public int getNumberOfGroupCases(Collection groups, String viewType) throws java.rmi.RemoteException;
 
 	/**
 	 * @see se.agura.applications.business.ApplicationsBusinessBean#getViewTypeActive

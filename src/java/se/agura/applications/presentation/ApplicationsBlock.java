@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBlock.java,v 1.2 2005/01/05 13:20:23 laddi Exp $
+ * $Id: ApplicationsBlock.java,v 1.3 2005/01/12 10:00:13 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -28,13 +28,14 @@ import com.idega.presentation.ui.CheckBox;
 import com.idega.presentation.ui.GenericButton;
 import com.idega.presentation.ui.InterfaceObject;
 import com.idega.presentation.ui.RadioButton;
+import com.idega.user.business.UserBusiness;
 
 
 /**
- * Last modified: $Date: 2005/01/05 13:20:23 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/12 10:00:13 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public abstract class ApplicationsBlock extends Block {
 
@@ -67,6 +68,15 @@ public abstract class ApplicationsBlock extends Block {
 	protected ApplicationsBusiness getBusiness(IWApplicationContext iwac) {
 		try {
 			return (ApplicationsBusiness) IBOLookup.getServiceInstance(iwac, ApplicationsBusiness.class);
+		}
+		catch (IBOLookupException ible) {
+			throw new IBORuntimeException(ible);
+		}
+	}
+
+	protected UserBusiness getUserBusiness(IWApplicationContext iwac) {
+		try {
+			return (UserBusiness) IBOLookup.getServiceInstance(iwac, UserBusiness.class);
 		}
 		catch (IBOLookupException ible) {
 			throw new IBORuntimeException(ible);

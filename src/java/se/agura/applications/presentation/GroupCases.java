@@ -1,5 +1,5 @@
 /*
- * $Id: GroupCases.java,v 1.4 2004/12/21 14:04:43 laddi Exp $
+ * $Id: GroupCases.java,v 1.5 2005/01/12 10:00:13 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -24,17 +24,16 @@ import com.idega.presentation.CollectionNavigator;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Table;
 import com.idega.presentation.text.Link;
-import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 
 
 
 /**
- * Last modified: $Date: 2004/12/21 14:04:43 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/12 10:00:13 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class GroupCases extends UserCases {
 
@@ -127,15 +126,14 @@ public class GroupCases extends UserCases {
 	protected Collection getCases(IWContext iwc, int startingEntry) {
 		try {
 			User user = iwc.getCurrentUser();
-			Group group = user.getPrimaryGroup();
-			return getBusiness(iwc).getGroupCases(group, getSession(iwc).getViewType(), startingEntry, iNumberOfEntries);
+			Collection groups = getUserBusiness(iwc).getUserGroups(user);
+			if (groups != null) {
+				return getBusiness(iwc).getGroupCases(groups, getSession(iwc).getViewType(), startingEntry, iNumberOfEntries);
+			}
+			return new ArrayList();
 		}
 		catch (RemoteException re) {
 			log(re);
-			return new ArrayList();
-		}
-		catch (NullPointerException npe) {
-			log(npe);
 			return new ArrayList();
 		}
 	}
@@ -143,8 +141,11 @@ public class GroupCases extends UserCases {
 	protected int getCaseCount(IWContext iwc) {
 		try {
 			User user = iwc.getCurrentUser();
-			Group group = user.getPrimaryGroup();
-			return getBusiness(iwc).getNumberOfGroupCases(group, getSession(iwc).getViewType());
+			Collection groups = getUserBusiness(iwc).getUserGroups(user);
+			if (groups != null) {
+				return getBusiness(iwc).getNumberOfGroupCases(groups, getSession(iwc).getViewType());
+			}
+			return 0;
 		}
 		catch (RemoteException re) {
 			log(re);
