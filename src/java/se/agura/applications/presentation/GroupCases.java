@@ -1,5 +1,5 @@
 /*
- * $Id: GroupCases.java,v 1.8 2005/01/19 10:51:04 laddi Exp $
+ * $Id: GroupCases.java,v 1.9 2005/01/19 20:26:01 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -27,6 +27,7 @@ import com.idega.presentation.IWContext;
 import com.idega.presentation.Table;
 import com.idega.presentation.text.Break;
 import com.idega.presentation.text.Link;
+import com.idega.presentation.text.Text;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
@@ -34,12 +35,14 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/01/19 10:51:04 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/19 20:26:01 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class GroupCases extends UserCases {
+	
+	private String iHeadlineStyleClass;
 
 	/* (non-Javadoc)
 	 * @see se.agura.applications.presentation.ApplicationsBlock#present(com.idega.presentation.IWContext)
@@ -49,8 +52,12 @@ public class GroupCases extends UserCases {
 			User user = iwc.getCurrentUser();
 			Group parent = user.getPrimaryGroup();
 			
-			if (!parent.getGroupType().equals(AguraConstants.GROUP_TYPE_EMPLOYEES)) {
-				add(getResourceBundle().getLocalizedString("applications.group_cases", "Group cases"));
+			if (parent != null && !parent.getGroupType().equals(AguraConstants.GROUP_TYPE_EMPLOYEES)) {
+				Text headline = new Text(getResourceBundle().getLocalizedString("applications.group_cases", "Group cases"));
+				if (iHeadlineStyleClass != null) {
+					headline.setStyleClass(iHeadlineStyleClass);
+				}
+				add(headline);
 				add(new Break(2));
 				add(getStatusNavigator(iwc));
 				add(new Break());
@@ -177,5 +184,9 @@ public class GroupCases extends UserCases {
 			log(npe);
 			return 0;
 		}
+	}
+	
+	public void setHeadlineStyleClass(String headlineStyleClass) {
+		iHeadlineStyleClass = headlineStyleClass;
 	}
 }
