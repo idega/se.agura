@@ -1,5 +1,5 @@
 /*
- * $Id: GroupCases.java,v 1.7 2005/01/19 09:18:19 laddi Exp $
+ * $Id: GroupCases.java,v 1.8 2005/01/19 10:51:04 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -34,10 +34,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/01/19 09:18:19 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/19 10:51:04 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class GroupCases extends UserCases {
 
@@ -47,7 +47,7 @@ public class GroupCases extends UserCases {
 	public void present(IWContext iwc) {
 		if (iwc.isLoggedOn()) {
 			User user = iwc.getCurrentUser();
-			Group parent = (Group) user.getParentNode();
+			Group parent = user.getPrimaryGroup();
 			
 			if (!parent.getGroupType().equals(AguraConstants.GROUP_TYPE_EMPLOYEES)) {
 				add(getResourceBundle().getLocalizedString("applications.group_cases", "Group cases"));
