@@ -2,6 +2,8 @@ package se.agura.applications.presentation;
 
 import java.rmi.RemoteException;
 
+import se.agura.AguraConstants;
+
 import com.idega.business.IBOLookup;
 import com.idega.core.accesscontrol.business.LoginDBHandler;
 import com.idega.core.accesscontrol.data.LoginTable;
@@ -13,12 +15,14 @@ import com.idega.presentation.Image;
 import com.idega.presentation.Table;
 import com.idega.presentation.text.Break;
 import com.idega.presentation.text.Text;
+import com.idega.presentation.ui.DropdownMenu;
 import com.idega.presentation.ui.Form;
 import com.idega.presentation.ui.PasswordInput;
 import com.idega.presentation.ui.SubmitButton;
 import com.idega.presentation.ui.TextInput;
 import com.idega.user.business.NoPhoneFoundException;
 import com.idega.user.business.UserBusiness;
+import com.idega.user.business.UserProperties;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.EmailValidator;
@@ -38,6 +42,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 	private final static String PARAMETER_EMAIL = "cap_email";
 	private final static String PARAMETER_PHONE_WORK = "cap_phn_w";
 	private final static String PARAMETER_PHONE_MOBILE = "cap_phn_m";
+	private final static String PARAMETER_WORK_HOURS = "cap_wrk_hrs";
 
 	private final static String KEY_PREFIX = "citizen.";
 	private final static String KEY_NAME = KEY_PREFIX + "name";
@@ -48,6 +53,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 	private final static String KEY_UPDATE = KEY_PREFIX + "update";
 	private final static String KEY_PHONE_MOBILE = KEY_PREFIX + "phone_mobile";
 	private final static String KEY_PHONE_WORK = KEY_PREFIX + "phone_work";
+	private final static String KEY_WORK_HOURS = KEY_PREFIX + "work_hours";
 	private final static String KEY_EMAIL_INVALID = KEY_PREFIX + "email_invalid";
 	private final static String KEY_PREFERENCES_SAVED = KEY_PREFIX + "preferenced_saved";
 	private final static String KEY_PASSWORD_EMPTY = KEY_PREFIX + "password_empty";
@@ -63,6 +69,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 	private final static String DEFAULT_PARISH = "Parish";
 	private final static String DEFAULT_PHONE_WORK = "Phone (work)";
 	private final static String DEFAULT_PHONE_MOBILE = "Phone (mobile)";
+	private final static String DEFAULT_WORK_HOURS = "Work hours";
 	private final static String DEFAULT_EMAIL_INVALID = "Email address invalid.";
 	private final static String DEFAULT_PREFERENCES_SAVED = "Your preferences has been saved.";
 	private final static String DEFAULT_PASSWORD_EMPTY = "Password cannot be empty.";		
@@ -159,6 +166,9 @@ public class UserAccountPreferences extends ApplicationsBlock {
 				valueEmail = "";
 			}
 		}
+
+		UserProperties properties = iwc.getUserProperties();
+		String workHours = properties.getProperty(AguraConstants.USER_PROPERTY_WORK_HOURS, "8");
 		
 		String valueNewPassword = iwc.getParameter(PARAMETER_NEW_PASSWORD) != null ? iwc.getParameter(PARAMETER_NEW_PASSWORD) : "";
 		String valueNewPasswordRepeated = iwc.getParameter(PARAMETER_NEW_PASSWORD_REPEATED) != null ? iwc.getParameter(PARAMETER_NEW_PASSWORD_REPEATED) : "";
@@ -187,6 +197,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		Text tNewPasswordRepeated = getHeader(getResourceBundle().getLocalizedString(KEY_NEW_PASSWORD_REPEATED, DEFAULT_NEW_PASSWORD_REPEATED));
 		Text tPhoneWork = getHeader(getResourceBundle().getLocalizedString(KEY_PHONE_WORK, DEFAULT_PHONE_WORK));
 		Text tPhoneMobile = getHeader(getResourceBundle().getLocalizedString(KEY_PHONE_MOBILE, DEFAULT_PHONE_MOBILE));
+		Text tWorkHours = getHeader(getResourceBundle().getLocalizedString(KEY_WORK_HOURS, DEFAULT_WORK_HOURS));
 
 		TextInput tiEmail = (TextInput) getInput(new TextInput(PARAMETER_EMAIL));
 		if (valueEmail != null) {
@@ -209,6 +220,11 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		if (valueNewPasswordRepeated != null) {
 			tiNewPasswordRepeated.setValue(valueNewPasswordRepeated);
 		}
+		DropdownMenu hours = (DropdownMenu) getInput(new DropdownMenu(PARAMETER_WORK_HOURS));
+		for (int a = 1; a <= 8; a++) {
+			hours.addMenuElement(a, String.valueOf(a));
+		}
+		hours.setSelectedElement(workHours);
 
 		SubmitButton sbUpdate = null;
 		if (iButtonImage != null) {
@@ -244,6 +260,10 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		table.add(tiPhoneWork, 2, row);
 
 		row++;
+		table.add(tWorkHours, 1, row);
+		table.add(hours, 2, row);
+
+		row++;
 		table.setHeight(row, 12);
 
 		row++;
@@ -264,6 +284,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		String sEmail = iwc.getParameter(PARAMETER_EMAIL);
 		String phoneMobile = iwc.getParameter(PARAMETER_PHONE_MOBILE);
 		String phoneWork = iwc.getParameter(PARAMETER_PHONE_WORK);
+		String workHours = iwc.getParameter(PARAMETER_WORK_HOURS);
 
 		String errorMessage = null;
 		boolean updatePassword = false;
@@ -328,6 +349,10 @@ public class UserAccountPreferences extends ApplicationsBlock {
 			}
 			ub.updateUserWorkPhone(user, phoneWork);
 			ub.updateUserMobilePhone(user, phoneMobile);
+			
+			UserProperties properties = iwc.getUserProperties();
+			properties.setProperty(AguraConstants.USER_PROPERTY_WORK_HOURS, workHours);
+			properties.store();
 		}
 		drawForm(iwc);
 		if (errorMessage == null) {
