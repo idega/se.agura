@@ -1,5 +1,5 @@
 /*
- * $Id: GroupCases.java,v 1.2 2004/12/09 13:43:38 laddi Exp $
+ * $Id: GroupCases.java,v 1.3 2004/12/09 15:33:22 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -31,10 +31,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2004/12/09 13:43:38 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/09 15:33:22 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class GroupCases extends UserCases {
 
@@ -44,10 +44,18 @@ public class GroupCases extends UserCases {
 		Collection cases = getCases(iwc, startingEntry);
 		int numberOfCases = cases.size();
 		if (numberOfCases > 0) {
+			Table outerTable = new Table(1, 3);
+			outerTable.setWidth(iWidth);
+			outerTable.setCellpadding(0);
+			outerTable.setCellspacing(0);
+			outerTable.add(navigator, 1, 1);
+			outerTable.setHeight(2, 6);
+			
 			Table table = new Table();
 			table.setWidth(iWidth);
 			table.setCellpadding(iCellpadding);
 			table.setCellspacing(0);
+			outerTable.add(table, 1, 3);
 			int column = 1;
 			int row = 1;
 			
@@ -105,7 +113,7 @@ public class GroupCases extends UserCases {
 				}
 			}
 			
-			return table;
+			return outerTable;
 		}
 		else {
 			Table table = new Table(1, 1);

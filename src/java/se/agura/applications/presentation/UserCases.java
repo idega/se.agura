@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.3 2004/12/09 14:04:12 laddi Exp $
+ * $Id: UserCases.java,v 1.4 2004/12/09 15:33:22 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -32,15 +32,14 @@ import com.idega.presentation.Table;
 import com.idega.presentation.text.Break;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
-import com.idega.user.data.Group;
 import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2004/12/09 14:04:12 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/09 15:33:22 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class UserCases extends ApplicationsBlock implements IWPageEventListener {
 
@@ -64,17 +63,24 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 	protected Table getCaseTable(IWContext iwc) {
 		CollectionNavigator navigator = getCollectionNavigator(iwc);
 		
+		Table outerTable = new Table(1, 3);
+		outerTable.setWidth(iWidth);
+		outerTable.setCellpadding(0);
+		outerTable.setCellspacing(0);
+		outerTable.add(navigator, 1, 1);
+		outerTable.setHeight(2, 6);
+		
 		Table table = new Table();
 		table.setWidth(iWidth);
 		table.setCellpadding(iCellpadding);
 		table.setCellspacing(0);
+		outerTable.add(table, 1, 3);
 		int column = 1;
 		int row = 1;
 		
 		table.add(getHeader(getResourceBundle().getLocalizedString("applications.nr", "Nr.")), column++, row);
 		table.add(getHeader(getResourceBundle().getLocalizedString("applications.type", "Type")), column++, row);
 		table.add(getHeader(getResourceBundle().getLocalizedString("applications.date", "Date")), column++, row);
-		table.add(getHeader(getResourceBundle().getLocalizedString("applications.handler", "Handler")), column++, row);
 		table.add(getHeader(getResourceBundle().getLocalizedString("applications.status", "Status")), column++, row);
 		if (iHeaderRowStyleClass != null) {
 			table.setRowStyleClass(row, iHeaderRowStyleClass);
@@ -89,7 +95,6 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 				column = 1;
 				
 				Case element = (Case) iter.next();
-				Group handler = element.getHandler();
 				IWTimestamp created = new IWTimestamp(element.getCreated());
 				String code = element.getCode();
 				CaseStatus caseStatus = element.getCaseStatus();
@@ -112,12 +117,6 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 				
 				table.add(getText(caseBusiness.getLocalizedCaseDescription(element, iwc.getCurrentLocale())), column++, row);
 				table.add(getText(created.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), column++, row);
-				if (handler != null) {
-					table.add(getText(handler.getName()), column++, row);
-				}
-				else {
-					table.add(getText("-"), column++, row);
-				}
 				table.add(getText(caseBusiness.getLocalizedCaseStatusDescription(caseStatus, iwc.getCurrentLocale())), column++, row);
 				
 				if (iTextRowStyleClass != null) {
@@ -132,7 +131,7 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 			}
 		}
 		
-		return table;
+		return outerTable;
 	}
 	
 	private Table getStatusNavigator(IWContext iwc) {
