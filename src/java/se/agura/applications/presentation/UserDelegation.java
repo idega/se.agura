@@ -1,5 +1,5 @@
 /*
- * $Id: UserDelegation.java,v 1.9 2005/02/14 16:11:22 laddi Exp $
+ * $Id: UserDelegation.java,v 1.10 2005/02/15 16:08:12 laddi Exp $
  * Created on 19.1.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -14,7 +14,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 import javax.ejb.RemoveException;
 
@@ -34,10 +33,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/02/14 16:11:22 $ by $Author: laddi $
+ * Last modified: $Date: 2005/02/15 16:08:12 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.9 $
+ * @version $Revision: 1.10 $
  */
 public class UserDelegation extends ApplicationsBlock {
 
@@ -64,7 +63,7 @@ public class UserDelegation extends ApplicationsBlock {
 					String[] substitutesType = { AguraConstants.GROUP_TYPE_SUBSTITUTES };
 					Collection substitutes = group.getChildGroups(substitutesType, true);
 					if (substitutes != null && !substitutes.isEmpty()) {
-						Collection users = new TreeSet();
+						Collection users = new ArrayList();
 						Iterator iter = substitutes.iterator();
 						while (iter.hasNext()) {
 							users.addAll(getUserBusiness(iwc).getUsersInGroup((Group) iter.next()));
