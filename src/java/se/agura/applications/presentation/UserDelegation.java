@@ -1,5 +1,5 @@
 /*
- * $Id: UserDelegation.java,v 1.1 2005/01/19 10:49:30 laddi Exp $
+ * $Id: UserDelegation.java,v 1.2 2005/01/19 15:33:12 laddi Exp $
  * Created on 19.1.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -34,10 +34,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/01/19 10:49:30 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/19 15:33:12 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class UserDelegation extends ApplicationsBlock {
 
@@ -57,35 +57,20 @@ public class UserDelegation extends ApplicationsBlock {
 				Group group = user.getPrimaryGroup();
 				parse(iwc, group);
 				
-				if (!group.getGroupType().equals(AguraConstants.GROUP_TYPE_EMPLOYEES) && !group.getGroupType().equals(AguraConstants.GROUP_TYPE_ASSISTANTS)) {
+				if (!group.getGroupType().equals(AguraConstants.GROUP_TYPE_EMPLOYEES) && !group.getGroupType().equals(AguraConstants.GROUP_TYPE_ASSISTANTS) && !group.getGroupType().equals(AguraConstants.GROUP_TYPE_SUBSTITUTES)) {
 					Form form = new Form();
 					form.addParameter(PARAMETER_GROUP, group.getPrimaryKey().toString());
 					
-					String[] assistantType = { AguraConstants.GROUP_TYPE_ASSISTANTS, AguraConstants.GROUP_TYPE_EMPLOYEES };
-					Collection assistants = group.getChildGroups(assistantType, true);
-					if (assistants != null && !assistants.isEmpty()) {
+					String[] substitutesType = { AguraConstants.GROUP_TYPE_SUBSTITUTES };
+					Collection substitutes = group.getChildGroups(substitutesType, true);
+					if (substitutes != null && !substitutes.isEmpty()) {
 						Collection users = new TreeSet();
-						Iterator iter = assistants.iterator();
-						while (iter.hasNext()) {
-							users.addAll(getUserBusiness(iwc).getUsersInPrimaryGroup((Group) iter.next()));
-						}
-						
-						form.add(getHeader(getResourceBundle().getLocalizedString("assistants", "Assistants")));
-						form.add(new Break(2));
-						form.add(getUserTable(users, group));
-						form.add(new Break());
-					}
-					
-					String[] employeesType = { AguraConstants.GROUP_TYPE_EMPLOYEES };
-					Collection employees = group.getChildGroups(employeesType, true);
-					if (employees != null && !employees.isEmpty()) {
-						Collection users = new TreeSet();
-						Iterator iter = employees.iterator();
+						Iterator iter = substitutes.iterator();
 						while (iter.hasNext()) {
 							users.addAll(getUserBusiness(iwc).getUsersInPrimaryGroup((Group) iter.next()));
 						}
 
-						form.add(getHeader(getResourceBundle().getLocalizedString("employees", "Employees")));
+						form.add(getHeader(getResourceBundle().getLocalizedString("substitutes", "Substitutes")));
 						form.add(new Break(2));
 						form.add(getUserTable(users, group));
 						form.add(new Break());
