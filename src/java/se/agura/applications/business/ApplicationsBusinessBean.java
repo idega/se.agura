@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBusinessBean.java,v 1.6 2005/01/12 10:00:13 laddi Exp $
+ * $Id: ApplicationsBusinessBean.java,v 1.7 2005/02/14 10:57:56 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -29,10 +29,10 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2005/01/12 10:00:13 $ by $Author: laddi $
+ * Last modified: $Date: 2005/02/14 10:57:56 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ApplicationsBusinessBean extends CaseBusinessBean implements ApplicationsBusiness {
 
@@ -45,6 +45,25 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 		return IW_BUNDLE_IDENTIFIER;
 	}
 
+	public User getSupervisor(Group parish) {
+		Collection supervisorGroups = parish.getChildGroups(new String[]{AguraConstants.GROUP_TYPE_SUPERVISOR}, true);
+		Iterator iter = supervisorGroups.iterator();
+		while (iter.hasNext()) {
+			Group group = (Group) iter.next();
+			try {
+				Collection users = getUserBusiness().getUsersInGroup(group);
+				Iterator iterator = users.iterator();
+				while (iterator.hasNext()) {
+					return (User) iterator.next();
+				}
+			}
+			catch (RemoteException re) {
+				throw new IBORuntimeException(re);
+			}
+		}
+		return null;
+	}
+	
 	public Collection getNotifiableUserCases(User user) {
 		try {
 			String[] statuses = { getCaseStatusGranted().getStatus(), getCaseStatusDenied().getStatus() };

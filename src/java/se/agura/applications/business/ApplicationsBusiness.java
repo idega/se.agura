@@ -1,8 +1,8 @@
 /*
- * $Id: ApplicationsBusiness.java,v 1.4 2005/01/12 10:00:13 laddi Exp $
- * Created on 21.12.2004
+ * $Id: ApplicationsBusiness.java,v 1.5 2005/02/14 10:57:56 laddi Exp $
+ * Created on 14.2.2005
  *
- * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
+ * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
  * This software is the proprietary information of Idega hf.
  * Use is subject to license terms.
@@ -17,12 +17,17 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2005/01/12 10:00:13 $ by $Author: laddi $
+ * Last modified: $Date: 2005/02/14 10:57:56 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public interface ApplicationsBusiness extends CaseBusiness {
+
+	/**
+	 * @see se.agura.applications.business.ApplicationsBusinessBean#getSupervisor
+	 */
+	public User getSupervisor(Group parish) throws java.rmi.RemoteException;
 
 	/**
 	 * @see se.agura.applications.business.ApplicationsBusinessBean#getNotifiableUserCases

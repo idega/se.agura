@@ -1,8 +1,8 @@
 /*
- * $Id: ApplicationsBusinessHomeImpl.java,v 1.3 2004/12/21 14:02:18 laddi Exp $
- * Created on 21.12.2004
+ * $Id: ApplicationsBusinessHomeImpl.java,v 1.4 2005/02/14 10:57:56 laddi Exp $
+ * Created on 14.2.2005
  *
- * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
+ * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
  * This software is the proprietary information of Idega hf.
  * Use is subject to license terms.
@@ -16,10 +16,10 @@ import com.idega.business.IBOHomeImpl;
 
 
 /**
- * Last modified: $Date: 2004/12/21 14:02:18 $ by $Author: laddi $
+ * Last modified: $Date: 2005/02/14 10:57:56 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ApplicationsBusinessHomeImpl extends IBOHomeImpl implements ApplicationsBusinessHome {
 
