@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBusinessBean.java,v 1.1 2004/12/08 16:02:34 laddi Exp $
+ * $Id: ApplicationsBusinessBean.java,v 1.2 2004/12/09 15:41:03 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -21,16 +21,22 @@ import com.idega.user.data.User;
 
 
 /**
- * Last modified: $Date: 2004/12/08 16:02:34 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/09 15:41:03 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ApplicationsBusinessBean extends CaseBusinessBean implements ApplicationsBusiness {
+
+  protected final static String IW_BUNDLE_IDENTIFIER = "se.agura";
 
 	private static final String VIEW_ACTIVE = "app_active";
 	private static final String VIEW_INACTIVE = "app_inactive";
 	
+	protected String getBundleIdentifier() {
+		return IW_BUNDLE_IDENTIFIER;
+	}
+
 	public Collection getUserCases(User user, String viewType, int startingCase, int numberOfCases) {
 		try {
 			String[] statuses = null;
