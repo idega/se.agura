@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.5 2004/12/13 23:49:55 laddi Exp $
+ * $Id: UserCases.java,v 1.6 2004/12/21 14:04:43 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -36,10 +36,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2004/12/13 23:49:55 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/21 14:04:43 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class UserCases extends ApplicationsBlock implements IWPageEventListener {
 
@@ -116,6 +116,7 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 				}
 				
 				table.add(getText(caseBusiness.getLocalizedCaseDescription(element, iwc.getCurrentLocale())), column++, row);
+				table.setNoWrap(column, row);
 				table.add(getText(created.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), column++, row);
 				table.add(getText(caseBusiness.getLocalizedCaseStatusDescription(caseStatus, iwc.getCurrentLocale())), column++, row);
 				

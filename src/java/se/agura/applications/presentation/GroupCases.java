@@ -1,5 +1,5 @@
 /*
- * $Id: GroupCases.java,v 1.3 2004/12/09 15:33:22 laddi Exp $
+ * $Id: GroupCases.java,v 1.4 2004/12/21 14:04:43 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -31,10 +31,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2004/12/09 15:33:22 $ by $Author: laddi $
+ * Last modified: $Date: 2004/12/21 14:04:43 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class GroupCases extends UserCases {
 
@@ -98,6 +98,7 @@ public class GroupCases extends UserCases {
 					
 					table.add(getText(caseBusiness.getLocalizedCaseDescription(element, iwc.getCurrentLocale())), column++, row);
 					table.add(getText(owner.getName()), column++, row);
+					table.setNoWrap(column, row);
 					table.add(getText(created.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), column++, row);
 					table.add(getText(caseBusiness.getLocalizedCaseStatusDescription(caseStatus, iwc.getCurrentLocale())), column++, row);
 					
