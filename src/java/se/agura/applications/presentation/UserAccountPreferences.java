@@ -373,6 +373,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 			
 			if (comments != null && comments.length() > 0) {
 				user.setMetaData(AguraConstants.USER_PROPERTY_COMMENTS, comments, "java.lang.String");
+				user.store();
 			}
 			
 			UserProperties properties = iwc.getUserProperties();
