@@ -1,14 +1,17 @@
 package se.agura.applications.presentation;
 
 import java.rmi.RemoteException;
-
+import java.util.Collection;
+import java.util.Iterator;
 import se.agura.AguraConstants;
-
 import com.idega.business.IBOLookup;
+import com.idega.business.IBOLookupException;
+import com.idega.business.IBORuntimeException;
 import com.idega.core.accesscontrol.business.LoginDBHandler;
 import com.idega.core.accesscontrol.data.LoginTable;
 import com.idega.core.contact.data.Email;
 import com.idega.core.contact.data.Phone;
+import com.idega.idegaweb.IWMainApplication;
 import com.idega.presentation.ExceptionWrapper;
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Image;
@@ -24,8 +27,11 @@ import com.idega.presentation.ui.TextInput;
 import com.idega.user.business.NoPhoneFoundException;
 import com.idega.user.business.UserBusiness;
 import com.idega.user.business.UserProperties;
+import com.idega.user.business.UserStatusBusiness;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
+import com.idega.user.data.UserStatus;
+import com.idega.user.presentation.UserStatusDropdown;
 import com.idega.util.EmailValidator;
 
 /**
@@ -45,10 +51,13 @@ public class UserAccountPreferences extends ApplicationsBlock {
 	private final static String PARAMETER_PHONE_MOBILE = "cap_phn_m";
 	private final static String PARAMETER_WORK_HOURS = "cap_wrk_hrs";
 	private final static String PARAMETER_COMMENTS = "cap_cmmnts";
+	private final static String PARAMETER_USER_STATUS = "cap_user_status";
+	
 
 	private final static String KEY_PREFIX = "citizen.";
 	private final static String KEY_NAME = KEY_PREFIX + "name";
 	private final static String KEY_PARISH = KEY_PREFIX + "parish";
+	private final static String KEY_PROFESSION = KEY_PREFIX + "profession";
 	private final static String KEY_EMAIL = KEY_PREFIX + "email";
 	private final static String KEY_NEW_PASSWORD = KEY_PREFIX + "new_password";
 	private final static String KEY_NEW_PASSWORD_REPEATED = KEY_PREFIX + "new_password_repeated";
@@ -70,6 +79,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 	private final static String DEFAULT_UPDATE = "Update";
 	private final static String DEFAULT_NAME = "Name";
 	private final static String DEFAULT_PARISH = "Parish";
+	private final static String DEFAULT_PROFESSION = "Profession";
 	private final static String DEFAULT_PHONE_WORK = "Phone (work)";
 	private final static String DEFAULT_PHONE_MOBILE = "Phone (mobile)";
 	private final static String DEFAULT_WORK_HOURS = "Work hours";
@@ -153,6 +163,29 @@ public class UserAccountPreferences extends ApplicationsBlock {
 
 		table.add(getHeader(getResourceBundle().getLocalizedString(KEY_PARISH, DEFAULT_PARISH)), 1, row);
 		table.add(getText(parish), 2, row);
+		row++;
+		
+		table.add(getHeader(getResourceBundle().getLocalizedString(KEY_PROFESSION, DEFAULT_PROFESSION)), 1, row);
+		
+		
+		UserStatusBusiness usBiz = getUserStatusBusiness();
+		Collection col = usBiz.getAllUserStatuses(user.getID());
+		UserStatusDropdown statusDropdown = new UserStatusDropdown(PARAMETER_USER_STATUS);
+		if(col!=null && !col.isEmpty()){
+			//basic gets the first one...this should be a multiple selection box
+			UserStatus status = null;
+			Iterator iter = col.iterator();
+			while (iter.hasNext() && status==null) {
+				UserStatus temp = (UserStatus) iter.next();
+				if(temp.getDateTo()==null){
+					status = temp;
+				}
+			}
+			
+			statusDropdown.setSelectedElement(status.getStatusId());
+		}
+
+		table.add(statusDropdown, 2, row);
 		row++;
 
 		String valueEmail = iwc.getParameter(PARAMETER_EMAIL);
@@ -306,6 +339,17 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		String phoneWork = iwc.getParameter(PARAMETER_PHONE_WORK);
 		String workHours = iwc.getParameter(PARAMETER_WORK_HOURS);
 		String comments = iwc.getParameter(PARAMETER_COMMENTS);
+		
+		String profession = iwc.getParameter(PARAMETER_USER_STATUS);
+		
+		if(profession!=null && !UserStatusDropdown.NO_STATUS_KEY.equals(profession)){
+			try {
+				getUserStatusBusiness().setUserGroupStatus(user.getID(),user.getPrimaryGroupID(),Integer.parseInt(profession));
+			}
+			catch (Exception e1) {
+				e1.printStackTrace();
+			}
+		}
 
 		String errorMessage = null;
 		boolean updatePassword = false;
@@ -389,5 +433,16 @@ public class UserAccountPreferences extends ApplicationsBlock {
 	
 	public void setButtonImage(Image buttonImage) {
 		iButtonImage = buttonImage;
+	}
+	
+	
+	protected UserStatusBusiness getUserStatusBusiness() {
+		try {
+			return (UserStatusBusiness) IBOLookup.getServiceInstance(
+					IWMainApplication.getDefaultIWApplicationContext(), UserStatusBusiness.class);
+		}
+		catch (IBOLookupException ible) {
+			throw new IBORuntimeException(ible);
+		}
 	}
 }

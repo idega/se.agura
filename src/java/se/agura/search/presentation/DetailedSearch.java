@@ -1,5 +1,5 @@
 /*
- * $Id: DetailedSearch.java,v 1.1 2005/03/20 11:02:29 eiki Exp $ Created on Mar 16, 2005
+ * $Id: DetailedSearch.java,v 1.2 2005/03/20 20:44:33 eiki Exp $ Created on Mar 16, 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  * 
@@ -58,10 +58,19 @@ public class DetailedSearch extends Block implements SearchConstants{
 
 	private void addResults(IWContext iwc) {
 		SearchResults results = new SearchResults();
+		
+		if(iwc.isParameterSet(DOCUMENT_SEARCH)){
+			results.setSearchPluginsToUse("ContentSearch");
+			add(results);
+		}
+		else if(iwc.isParameterSet(CONTACT_SEARCH)){
+			results.setSearchPluginsToUse("ParishUserContactSearchPlugin");
+			add(results);
+		}
 		// todo set as a list the two advanced searchers
 		// create those searches
 		// use the advanced search parameter
-		add(results);
+
 	}
 
 	private void addDocumentSearch(IWContext iwc) {
@@ -71,16 +80,17 @@ public class DetailedSearch extends Block implements SearchConstants{
 		Form form = new Form();
 	
 		form.addParameter(Searcher.DEFAULT_ADVANCED_SEARCH_PARAMETER_NAME,"true");
+		form.addParameter(DOCUMENT_SEARCH,"true");
 		TextInput searchword = new TextInput(DOCUMENT_SEARCH_WORD_PARAMETER_NAME);
 		searchword.keepStatusOnAction();
 		
 		Label label = new Label(getLocalizedString("searchword", "Search:", iwc), searchword);
 		DropdownMenu documentType = new DropdownMenu(DOCUMENT_TYPE_PARAMETER_NAME);
 		documentType.addMenuElement("*", getLocalizedString("Any type", "Any", iwc) );
-		documentType.addMenuElement("*.doc",".doc");
-		documentType.addMenuElement("*.pdf",".pdf");
-		documentType.addMenuElement("*.xls",".xls");
-		documentType.addMenuElement("*.ppt",".ppt");
+		documentType.addMenuElement("doc",".doc");
+		documentType.addMenuElement("pdf",".pdf");
+		documentType.addMenuElement("xls",".xls");
+		documentType.addMenuElement("ppt",".ppt");
 		
 		documentType.keepStatusOnAction();
 		
@@ -112,6 +122,7 @@ public class DetailedSearch extends Block implements SearchConstants{
 		Form form = new Form();
 
 		form.addParameter(Searcher.DEFAULT_ADVANCED_SEARCH_PARAMETER_NAME,"true");
+		form.addParameter(CONTACT_SEARCH,"true");
 		
 		TextInput searchword = new TextInput(CONTACT_SEARCH_WORD_PARAMETER_NAME);
 		searchword.keepStatusOnAction();

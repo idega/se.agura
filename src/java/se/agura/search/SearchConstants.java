@@ -1,5 +1,5 @@
 /*
- * $Id: SearchConstants.java,v 1.1 2005/03/20 11:02:29 eiki Exp $
+ * $Id: SearchConstants.java,v 1.2 2005/03/20 20:44:32 eiki Exp $
  * Created on Mar 18, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -12,10 +12,14 @@ package se.agura.search;
 
 public interface SearchConstants {
 	
+	
+	public static final String CONTACT_SEARCH = "contact_s";
 	public static final String CONTACT_SEARCH_WORD_PARAMETER_NAME = "contact_s_word";
 	public static final String CONTACT_PROFESSION_PARAMETER_NAME = "contact_prof";
 	public static final String CONTACT_WORKPLACE_PARAMETER_NAME = "contact_work";
 	
+	//TODO add dependency : didn't have time to add dependecy to ContentSearch
+	public static final String DOCUMENT_SEARCH = "doc_s";
 	public static final String DOCUMENT_SEARCH_WORD_PARAMETER_NAME = "doc_s_word";
 	public static final String DOCUMENT_TYPE_PARAMETER_NAME = "doc_type";
 	public static final String DOCUMENT_ORDERING_PARAMETER_NAME = "doc_order";
