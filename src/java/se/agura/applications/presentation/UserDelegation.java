@@ -1,5 +1,5 @@
 /*
- * $Id: UserDelegation.java,v 1.2 2005/01/19 15:33:12 laddi Exp $
+ * $Id: UserDelegation.java,v 1.3 2005/01/19 20:32:07 laddi Exp $
  * Created on 19.1.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -34,10 +34,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/01/19 15:33:12 $ by $Author: laddi $
+ * Last modified: $Date: 2005/01/19 20:32:07 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class UserDelegation extends ApplicationsBlock {
 
@@ -107,7 +107,7 @@ public class UserDelegation extends ApplicationsBlock {
 		while (iter.hasNext()) {
 			User user = (User) iter.next();
 			
-			CheckBox box = new CheckBox(PARAMETER_ADD_USERS, user.getPrimaryKey().toString());
+			CheckBox box = getCheckBox(new CheckBox(PARAMETER_ADD_USERS, user.getPrimaryKey().toString()));
 			if (user.hasRelationTo(primaryGroup)) {
 				table.add(new HiddenInput(PARAMETER_CONTAINED_USERS, user.getPrimaryKey().toString()), 1, row);
 				box.setChecked(true);
@@ -121,7 +121,7 @@ public class UserDelegation extends ApplicationsBlock {
 		return table;
 	}
 	
-	private void parse(IWContext iwc, Group group) {
+	private void parse(IWContext iwc, Group group) throws RemoteException {
 		if (iwc.isParameterSet(PARAMETER_GROUP)) {
 			String[] usersToAdd = iwc.getParameterValues(PARAMETER_ADD_USERS);
 			String[] usersContained = iwc.getParameterValues(PARAMETER_CONTAINED_USERS);
@@ -135,8 +135,9 @@ public class UserDelegation extends ApplicationsBlock {
 			
 			Iterator iter = removeUsers.iterator();
 			while (iter.hasNext()) {
-				User element = (User) iter.next();
+				String userID = (String) iter.next();
 				try {
+					User element = getUserBusiness(iwc).getUser(new Integer(userID));
 					group.removeUser(element, iwc.getCurrentUser());
 				}
 				catch (RemoveException re) {
@@ -146,7 +147,8 @@ public class UserDelegation extends ApplicationsBlock {
 
 			iter = addUsers.iterator();
 			while (iter.hasNext()) {
-				User element = (User) iter.next();
+				String userID = (String) iter.next();
+				User element = getUserBusiness(iwc).getUser(new Integer(userID));
 				group.addGroup(element, new IWTimestamp().getTimestamp());
 			}
 		}
