@@ -9,4 +9,5 @@ applications.user=Anv\u00E4ndare
 case_code_key.VACATIN=Ledighetsans\u00F6kan\: {0}
 case_status_key.UBEH=Under behandling
 favorite.inactive_cases=Avslutade \u00E4renden
+refresh=Skicka
 vacation_type.compensation=Kompensationsledighet

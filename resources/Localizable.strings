@@ -11,4 +11,5 @@ case_status_key.UBEH=UBEH
 favorite.inactive_cases=Inactive cases
 iw.component.se.agura.applications.presentation.GroupCases.name=GroupCases
 iw.component.se.agura.applications.presentation.UserCases.name=UserCases
+refresh=Refresh
 vacation_type.compensation=Compensation vacation
