@@ -1,5 +1,5 @@
 /*
- * $Id: UserDelegation.java,v 1.8 2005/02/14 13:58:42 laddi Exp $
+ * $Id: UserDelegation.java,v 1.9 2005/02/14 16:11:22 laddi Exp $
  * Created on 19.1.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -34,10 +34,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/02/14 13:58:42 $ by $Author: laddi $
+ * Last modified: $Date: 2005/02/14 16:11:22 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class UserDelegation extends ApplicationsBlock {
 
@@ -151,6 +151,8 @@ public class UserDelegation extends ApplicationsBlock {
 				User element = getUserBusiness(iwc).getUser(new Integer(userID));
 				group.addGroup(element, new IWTimestamp().getTimestamp());
 			}
+			
+			getParentPage().setAlertOnLoad(getResourceBundle().getLocalizedString("delegation_finished", "Permissions granted/removed."));
 		}
 	}
 	
