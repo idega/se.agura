@@ -1,5 +1,5 @@
 /*
- * $Id: DetailedSearch.java,v 1.2 2005/03/20 20:44:33 eiki Exp $ Created on Mar 16, 2005
+ * $Id: DetailedSearch.java,v 1.3 2005/04/07 18:24:42 eiki Exp $ Created on Mar 16, 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  * 
@@ -75,17 +75,19 @@ public class DetailedSearch extends Block implements SearchConstants{
 
 	private void addDocumentSearch(IWContext iwc) {
 		// TODO wrap in a block
-		add(getLocalizedString("documentsearch.text", "Search for documents on the intranet", iwc));
+		add(getHeader(getLocalizedString("documentsearch.text", "Search for documents on the intranet", iwc)));
 		addBreak();
 		Form form = new Form();
 	
 		form.addParameter(Searcher.DEFAULT_ADVANCED_SEARCH_PARAMETER_NAME,"true");
 		form.addParameter(DOCUMENT_SEARCH,"true");
-		TextInput searchword = new TextInput(DOCUMENT_SEARCH_WORD_PARAMETER_NAME);
+		TextInput searchword = (TextInput) getInput( new TextInput(DOCUMENT_SEARCH_WORD_PARAMETER_NAME) );
 		searchword.keepStatusOnAction();
 		
 		Label label = new Label(getLocalizedString("searchword", "Search:", iwc), searchword);
-		DropdownMenu documentType = new DropdownMenu(DOCUMENT_TYPE_PARAMETER_NAME);
+		setStyleOnLabel(label);
+		
+		DropdownMenu documentType = (DropdownMenu) getInput(new DropdownMenu(DOCUMENT_TYPE_PARAMETER_NAME));
 		documentType.addMenuElement("*", getLocalizedString("Any type", "Any", iwc) );
 		documentType.addMenuElement("doc",".doc");
 		documentType.addMenuElement("pdf",".pdf");
@@ -95,13 +97,17 @@ public class DetailedSearch extends Block implements SearchConstants{
 		documentType.keepStatusOnAction();
 		
 		Label typeLabel = new Label(getLocalizedString("documentType", "Type:", iwc), documentType);
-		DropdownMenu sorting = new DropdownMenu(DOCUMENT_ORDERING_PARAMETER_NAME);
+		setStyleOnLabel(typeLabel);
+		
+		DropdownMenu sorting = (DropdownMenu) getInput( new DropdownMenu(DOCUMENT_ORDERING_PARAMETER_NAME) );
 		sorting.keepStatusOnAction();
 		
 		sorting.addMenuElement(DOCUMENT_ORDERING_BY_DATE, getLocalizedString("by date", "date", iwc));
 		sorting.addMenuElement(DOCUMENT_ORDERING_BY_NAME, getLocalizedString("by name", "name", iwc));
 		sorting.addMenuElement(DOCUMENT_ORDERING_BY_SIZE, getLocalizedString("by size", "size", iwc));
 		Label sortingLabel = new Label(getLocalizedString("sorting", "Sort by:", iwc), sorting);
+		setStyleOnLabel(sortingLabel);
+		
 		form.add(label);
 		form.add(searchword);
 		form.addBreak();
@@ -111,36 +117,38 @@ public class DetailedSearch extends Block implements SearchConstants{
 		form.add(sortingLabel);
 		form.add(sorting);
 		form.addBreak();
-		form.add(new SubmitButton());
+		form.add(getButton(new SubmitButton(getLocalizedString("search", "search", iwc))));
 		add(form);
 	}
 
 	private void addContactSearch(IWContext iwc) {
 		// TODO wrap in a block
-		add(getLocalizedString("contactsearch.text", "Search for a person within the Swedish church in Malmo", iwc));
+		add(getHeader(getLocalizedString("contactsearch.text", "Search for a person within the Swedish church in Malmo", iwc)));
 		addBreak();
 		Form form = new Form();
 
 		form.addParameter(Searcher.DEFAULT_ADVANCED_SEARCH_PARAMETER_NAME,"true");
 		form.addParameter(CONTACT_SEARCH,"true");
 		
-		TextInput searchword = new TextInput(CONTACT_SEARCH_WORD_PARAMETER_NAME);
+		TextInput searchword =  (TextInput) getInput( new TextInput(CONTACT_SEARCH_WORD_PARAMETER_NAME) );
 		searchword.keepStatusOnAction();
 		
 		Label label = new Label(getLocalizedString("searchword", "Search:", iwc), searchword);
-		UserStatusDropdown profession = new UserStatusDropdown(CONTACT_PROFESSION_PARAMETER_NAME);
+		setStyleOnLabel(label);
+		
+		UserStatusDropdown profession = (UserStatusDropdown) getInput(new UserStatusDropdown(CONTACT_PROFESSION_PARAMETER_NAME));
 		profession.keepStatusOnAction();
-		// DropdownMenu profession = new
-		// DropdownMenu(CONTACT_PROFESSION_PARAMETER_NAME);
-		// profession.addMenuElement("Fastighetspersonal");
-		// profession.addMenuElement("Musiker");
-		// profession.addMenuElement("Diakon/ass");
+
 		Label professionLabel = new Label(getLocalizedString("profession", "Profession:", iwc), profession);
-		DropdownMenu workplace = getCongregationMenu(iwc);
+		setStyleOnLabel(professionLabel);
+		
+		DropdownMenu workplace = (DropdownMenu) getInput( getCongregationMenu(iwc) );
 		workplace.addMenuElementFirst("novalue","  ");
 		workplace.keepStatusOnAction();
 		
 		Label workplaceLabel = new Label(getLocalizedString("workplace", "Workplace:", iwc), workplace);
+		setStyleOnLabel(workplaceLabel);
+		
 		form.add(label);
 		form.add(searchword);
 		form.addBreak();
@@ -150,7 +158,7 @@ public class DetailedSearch extends Block implements SearchConstants{
 		form.add(workplaceLabel);
 		form.add(workplace);
 		form.addBreak();
-		form.add(new SubmitButton());
+		form.add(getButton(new SubmitButton(getLocalizedString("search", "search", iwc))));
 		add(form);
 	}
 
@@ -267,5 +275,11 @@ public class DetailedSearch extends Block implements SearchConstants{
 			button.setStyleClass(buttonStyleClass);
 		}
 		return button;
+	}
+	
+	protected void setStyleOnLabel(Label label){
+		if(getTextStyleClass()!=null){
+			label.setStyleClass(getTextStyleClass());
+		}
 	}
 }
