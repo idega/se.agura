@@ -1,6 +1,6 @@
 /*
- * $Id: ParishUserContactSearchPlugin.java,v 1.2 2005/04/07 18:24:42 eiki Exp $ Created
- * on Mar 18, 2005
+ * $Id: ParishUserContactSearchPlugin.java,v 1.3 2005/04/09 21:48:07 eiki Exp $
+ * Created on Mar 18, 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  * 
@@ -13,38 +13,58 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
+import java.util.LinkedHashMap;
 import java.util.List;
+import java.util.Map;
 import javax.ejb.FinderException;
+import se.agura.AguraConstants;
+import se.agura.applications.business.ApplicationsBusiness;
 import se.agura.search.SearchConstants;
 import com.idega.business.IBOLookup;
 import com.idega.business.IBOLookupException;
 import com.idega.business.IBORuntimeException;
+import com.idega.core.contact.data.Phone;
 import com.idega.core.search.business.SearchPlugin;
 import com.idega.core.search.business.SearchQuery;
 import com.idega.core.search.data.AdvancedSearchQuery;
+import com.idega.core.search.data.BasicSearchResult;
 import com.idega.idegaweb.IWMainApplication;
+import com.idega.idegaweb.IWResourceBundle;
+import com.idega.presentation.IWContext;
 import com.idega.user.block.search.business.SearchEngine;
 import com.idega.user.block.search.business.UserContactSearch;
 import com.idega.user.business.GroupBusiness;
+import com.idega.user.business.NoPhoneFoundException;
 import com.idega.user.business.UserBusiness;
 import com.idega.user.business.UserStatusBusiness;
 import com.idega.user.data.Group;
+import com.idega.user.data.User;
+import com.idega.user.data.UserStatus;
 
 /**
  * 
  * 
- * Last modified: $Date: 2005/04/07 18:24:42 $ by $Author: eiki $
+ * Last modified: $Date: 2005/04/09 21:48:07 $ by $Author: eiki $
  * 
  * Extends the UserContactSearch to support AdvancedSearchQueries. Searches
  * parishes for user contact info by workplace,profession, name etc.
  * 
  * @author <a href="mailto:eiki@idega.com">Eirikur S. Hrafnsson</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class ParishUserContactSearchPlugin extends UserContactSearch implements SearchPlugin, SearchConstants {
 
+	protected final static String IW_BUNDLE_IDENTIFIER = "se.agura";
+	public static final String USER_IW_BUNDLE_IDENTIFIER = "com.idega.user";
+	IWResourceBundle iwrb;
+	IWResourceBundle userIwrb;
+
 	public ParishUserContactSearchPlugin() {
 		super();
+		IWMainApplication iwma = IWMainApplication.getDefaultIWMainApplication();
+		IWContext iwc = IWContext.getInstance();
+		iwrb = iwma.getBundle(IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc);
+		userIwrb = iwma.getBundle(USER_IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc);
 	}
 
 	/*
@@ -88,44 +108,40 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 			// SLOW but effective way of getting everybody...
 			Collection users = new ArrayList();
 			String searchWord = (String) searchQuery.getSearchParameters().get(CONTACT_SEARCH_WORD_PARAMETER_NAME);
+			boolean anyOtherSearchParameterSet = false;
 			if (searchWord != null && !"".equals(searchWord)) {
+				anyOtherSearchParameterSet = true;
 				users = doSimpleSearch(users, searchWord);
 				if (users == null) {
 					users = new ArrayList();
 				}
 			}
-			
 			String parishGroupId = (String) searchQuery.getSearchParameters().get(CONTACT_WORKPLACE_PARAMETER_NAME);
-			if (parishGroupId != null) {
+			if (parishGroupId != null && !"novalue".equals(parishGroupId)) {
 				try {
-//					Collection allParishPeople = getGroupBusiness().getUsersFromGroupRecursive(  
-//					getGroupBusiness().getGroupByGroupID(Integer.parseInt(parishGroupId)));	
-					
-					//only get the parish and one level down
+					// Collection allParishPeople =
+					// getGroupBusiness().getUsersFromGroupRecursive(
+					// getGroupBusiness().getGroupByGroupID(Integer.parseInt(parishGroupId)));
+					// only get the parish and one level down
 					Group parish = getGroupBusiness().getGroupByGroupID(Integer.parseInt(parishGroupId));
 					Collection childGroups = getGroupBusiness().getChildGroups(parish);
 					Collection headUsers = getGroupBusiness().getUsers(parish);
 					List parishans = new ArrayList();
 					parishans.addAll(headUsers);
-				
-					if(childGroups!=null && !childGroups.isEmpty()){
+					if (childGroups != null && !childGroups.isEmpty()) {
 						Iterator iter = childGroups.iterator();
 						while (iter.hasNext()) {
 							Group group = (Group) iter.next();
 							Collection children = getGroupBusiness().getUsers(group);
-							if(children!=null && !children.isEmpty()){
+							if (children != null && !children.isEmpty()) {
 								parishans.addAll(children);
 							}
 						}
-						
-					}			
-					
-					if (!users.isEmpty()) {
-						users.retainAll(parishans);
 					}
-					else {
-						users = parishans;
+					if (anyOtherSearchParameterSet) {
+						parishans.retainAll(users);
 					}
+					users = parishans;
 				}
 				catch (NumberFormatException e) {
 					// e.printStackTrace();
@@ -138,20 +154,18 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 					e.printStackTrace();
 				}
 			}
-			
-			
 			String professionStatusId = (String) searchQuery.getSearchParameters().get(
 					CONTACT_PROFESSION_PARAMETER_NAME);
-			if (professionStatusId != null) {
+			if (professionStatusId != null && !"default_key".equals(professionStatusId)) {
 				try {
 					Collection usersWithStatus = getUserStatusBusiness().getAllUsersWithStatus(
 							Integer.parseInt(professionStatusId));
-					if (!users.isEmpty()) {
-						users.retainAll(usersWithStatus);
+					if (anyOtherSearchParameterSet) {
+						usersWithStatus.retainAll(users);
 					}
-					else {
-						users = usersWithStatus;
-					}
+					users = usersWithStatus;
+					// just in case we add other parameters
+					anyOtherSearchParameterSet = true;
 				}
 				catch (NumberFormatException e) {
 					// e.printStackTrace();
@@ -172,7 +186,8 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 	 */
 	protected Collection doSimpleSearch(Collection users, String searchWord) {
 		try {
-			SearchEngine userSearch = (SearchEngine) IBOLookup.getServiceInstance(iwma.getIWApplicationContext(), SearchEngine.class);
+			SearchEngine userSearch = (SearchEngine) IBOLookup.getServiceInstance(iwma.getIWApplicationContext(),
+					SearchEngine.class);
 			searchWord = searchWord.replace('*', '%');
 			users = userSearch.getSimpleSearchResults(searchWord);
 		}
@@ -183,6 +198,113 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 			e.printStackTrace();
 		}
 		return users;
+	}
+
+	protected void fillSearchResultAbstract(BasicSearchResult result, User user) {
+		// we want this empty because we add all our extra info to the
+		// attributes map
+	}
+
+	protected void fillSearchResultAttributesMap(BasicSearchResult result, User user) {
+		Map map = new LinkedHashMap();
+		try {
+			// profession
+			addUserProfession(user, map);
+			// work phone info
+			addWorkPhoneInfo(user, map);
+			// add parish
+			addParishName(user, map);
+			// mobile phone info
+			addMobilePhoneInfo(user, map);
+			// description from user account info
+			addUserComment(user, map);
+		}
+		catch (RemoteException re) {
+			re.printStackTrace();
+		}
+		result.setSearchResultAttributes(map);
+	}
+
+	/**
+	 * @param user
+	 * @param map
+	 */
+	protected void addUserComment(User user, Map map) {
+		String comment = user.getMetaData(AguraConstants.USER_PROPERTY_COMMENTS);
+		if (comment != null && !"".equals(comment)) {
+			map.put("comment", comment);
+		}
+	}
+
+	/**
+	 * @param user
+	 * @param map
+	 * @throws RemoteException
+	 */
+	protected void addWorkPhoneInfo(User user, Map map) throws RemoteException {
+		// work phone
+		try {
+			Phone p = getUserBusiness().getUsersWorkPhone(user);
+			map.put("workphone", iwrb.getLocalizedString("parish.usercontact.search.work", "work") + ": "
+					+ p.getNumber());
+		}
+		catch (NoPhoneFoundException npfe) {
+		}
+	}
+
+	/**
+	 * @param user
+	 * @param map
+	 * @throws RemoteException
+	 */
+	protected void addMobilePhoneInfo(User user, Map map) throws RemoteException {
+		// mobile phone
+		try {
+			Phone p = getUserBusiness().getUsersMobilePhone(user);
+			map.put("mobile", iwrb.getLocalizedString("parish.usercontact.search.mobile", "mobile") + ": "
+					+ p.getNumber());
+		}
+		catch (NoPhoneFoundException npfe) {
+		}
+	}
+
+	/**
+	 * @param user
+	 * @param map
+	 * @throws RemoteException
+	 */
+	protected void addUserProfession(User user, Map map) throws RemoteException {
+		Collection col = getUserStatusBusiness().getAllUserStatuses(((Integer) user.getPrimaryKey()).intValue());
+		if (col != null && !col.isEmpty()) {
+			// basic gets the first one...this should be a multiple
+			// selection box
+			UserStatus status = null;
+			Iterator iter = col.iterator();
+			while (iter.hasNext() && status == null) {
+				UserStatus temp = (UserStatus) iter.next();
+				if (temp.getDateTo() == null) {
+					status = temp;
+				}
+			}
+			String statusKey = status.getStatus().getStatusKey();
+			map.put("profession", userIwrb.getLocalizedString(statusKey, statusKey));
+		}
+	}
+
+	/**
+	 * @param user
+	 * @param map
+	 */
+	protected void addParishName(User user, Map map) {
+		try {
+			Group group = getApplicationsBusiness().getUserParish(user);
+			if (group != null) {
+				map.put("parish", group.getName());
+			}
+		}
+		catch (RemoteException re) {
+			re.printStackTrace();
+		}
 	}
 
 	protected UserStatusBusiness getUserStatusBusiness() {
@@ -209,6 +331,16 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 		try {
 			return (GroupBusiness) IBOLookup.getServiceInstance(IWMainApplication.getDefaultIWApplicationContext(),
 					GroupBusiness.class);
+		}
+		catch (IBOLookupException ible) {
+			throw new IBORuntimeException(ible);
+		}
+	}
+
+	protected ApplicationsBusiness getApplicationsBusiness() {
+		try {
+			return (ApplicationsBusiness) IBOLookup.getServiceInstance(
+					IWMainApplication.getDefaultIWApplicationContext(), ApplicationsBusiness.class);
 		}
 		catch (IBOLookupException ible) {
 			throw new IBORuntimeException(ible);
