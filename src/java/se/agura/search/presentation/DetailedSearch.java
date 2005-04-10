@@ -1,5 +1,5 @@
 /*
- * $Id: DetailedSearch.java,v 1.3 2005/04/07 18:24:42 eiki Exp $ Created on Mar 16, 2005
+ * $Id: DetailedSearch.java,v 1.4 2005/04/10 20:50:55 eiki Exp $ Created on Mar 16, 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  * 
@@ -93,6 +93,7 @@ public class DetailedSearch extends Block implements SearchConstants{
 		documentType.addMenuElement("pdf",".pdf");
 		documentType.addMenuElement("xls",".xls");
 		documentType.addMenuElement("ppt",".ppt");
+		documentType.addMenuElement("txt",".txt");
 		
 		documentType.keepStatusOnAction();
 		
