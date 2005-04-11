@@ -1,5 +1,5 @@
 /*
- * $Id: ParishUserContactSearchPlugin.java,v 1.3 2005/04/09 21:48:07 eiki Exp $
+ * $Id: ParishUserContactSearchPlugin.java,v 1.4 2005/04/11 03:23:25 eiki Exp $
  * Created on Mar 18, 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -44,13 +44,13 @@ import com.idega.user.data.UserStatus;
 /**
  * 
  * 
- * Last modified: $Date: 2005/04/09 21:48:07 $ by $Author: eiki $
+ * Last modified: $Date: 2005/04/11 03:23:25 $ by $Author: eiki $
  * 
  * Extends the UserContactSearch to support AdvancedSearchQueries. Searches
  * parishes for user contact info by workplace,profession, name etc.
  * 
  * @author <a href="mailto:eiki@idega.com">Eirikur S. Hrafnsson</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class ParishUserContactSearchPlugin extends UserContactSearch implements SearchPlugin, SearchConstants {
 
@@ -245,8 +245,11 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 		// work phone
 		try {
 			Phone p = getUserBusiness().getUsersWorkPhone(user);
-			map.put("workphone", iwrb.getLocalizedString("parish.usercontact.search.work", "work") + ": "
-					+ p.getNumber());
+			String number = p.getNumber();
+			if(number!=null && !"null".equalsIgnoreCase(number)){
+				map.put("workphone", iwrb.getLocalizedString("parish.usercontact.search.work", "work") + ": "
+						+ number);
+			}
 		}
 		catch (NoPhoneFoundException npfe) {
 		}
@@ -261,8 +264,11 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 		// mobile phone
 		try {
 			Phone p = getUserBusiness().getUsersMobilePhone(user);
-			map.put("mobile", iwrb.getLocalizedString("parish.usercontact.search.mobile", "mobile") + ": "
-					+ p.getNumber());
+			String number = p.getNumber();
+			if(number!=null && !"null".equalsIgnoreCase(number)){
+				map.put("mobile", iwrb.getLocalizedString("parish.usercontact.search.mobile", "mobile") + ": "
+						+ number);
+			}
 		}
 		catch (NoPhoneFoundException npfe) {
 		}
