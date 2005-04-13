@@ -1,5 +1,5 @@
 /*
- * $Id: DetailedSearch.java,v 1.4 2005/04/10 20:50:55 eiki Exp $ Created on Mar 16, 2005
+ * $Id: DetailedSearch.java,v 1.5 2005/04/13 14:14:56 eiki Exp $ Created on Mar 16, 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  * 
@@ -25,6 +25,7 @@ import com.idega.presentation.ui.Form;
 import com.idega.presentation.ui.GenericButton;
 import com.idega.presentation.ui.InterfaceObject;
 import com.idega.presentation.ui.Label;
+import com.idega.presentation.ui.PrintButton;
 import com.idega.presentation.ui.SubmitButton;
 import com.idega.presentation.ui.TextInput;
 import com.idega.presentation.ui.util.SelectorUtility;
@@ -51,8 +52,9 @@ public class DetailedSearch extends Block implements SearchConstants{
 	public void main(IWContext iwc) throws Exception {
 		addContactSearch(iwc);
 		addBreak();
-		addDocumentSearch(iwc);
-		addBreak();
+		//document search temporarely disabled
+//		addDocumentSearch(iwc);
+//		addBreak();
 		addResults(iwc);
 	}
 
@@ -62,6 +64,9 @@ public class DetailedSearch extends Block implements SearchConstants{
 		if(iwc.isParameterSet(DOCUMENT_SEARCH)){
 			results.setSearchPluginsToUse("ContentSearch");
 			add(results);
+			addBreak();
+			add(new PrintButton());
+			
 		}
 		else if(iwc.isParameterSet(CONTACT_SEARCH)){
 			results.setSearchPluginsToUse("ParishUserContactSearchPlugin");
