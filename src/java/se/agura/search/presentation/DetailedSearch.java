@@ -1,5 +1,5 @@
 /*
- * $Id: DetailedSearch.java,v 1.5 2005/04/13 14:14:56 eiki Exp $ Created on Mar 16, 2005
+ * $Id: DetailedSearch.java,v 1.6 2005/05/06 13:14:59 eiki Exp $ Created on Mar 16, 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  * 
@@ -60,17 +60,23 @@ public class DetailedSearch extends Block implements SearchConstants{
 
 	private void addResults(IWContext iwc) {
 		SearchResults results = new SearchResults();
+		PrintButton print = new PrintButton();
+		if (buttonStyleClass != null) {
+			print.setStyleClass(buttonStyleClass);
+		}
 		
 		if(iwc.isParameterSet(DOCUMENT_SEARCH)){
 			results.setSearchPluginsToUse("ContentSearch");
 			add(results);
 			addBreak();
-			add(new PrintButton());
+			add(print);
 			
 		}
 		else if(iwc.isParameterSet(CONTACT_SEARCH)){
 			results.setSearchPluginsToUse("ParishUserContactSearchPlugin");
 			add(results);
+			addBreak();
+			add(print);
 		}
 		// todo set as a list the two advanced searchers
 		// create those searches
