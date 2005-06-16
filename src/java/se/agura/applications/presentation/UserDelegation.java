@@ -1,5 +1,5 @@
 /*
- * $Id: UserDelegation.java,v 1.10 2005/02/15 16:08:12 laddi Exp $
+ * $Id: UserDelegation.java,v 1.11 2005/06/16 14:42:50 anna Exp $
  * Created on 19.1.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -30,13 +30,14 @@ import com.idega.presentation.ui.SubmitButton;
 import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
+import com.idega.util.ListUtil;
 
 
 /**
- * Last modified: $Date: 2005/02/15 16:08:12 $ by $Author: laddi $
+ * Last modified: $Date: 2005/06/16 14:42:50 $ by $Author: anna $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class UserDelegation extends ApplicationsBlock {
 
@@ -125,8 +126,8 @@ public class UserDelegation extends ApplicationsBlock {
 			String[] usersToAdd = iwc.getParameterValues(PARAMETER_ADD_USERS);
 			String[] usersContained = iwc.getParameterValues(PARAMETER_CONTAINED_USERS);
 			
-			Collection addUsers = usersToAdd != null ? Arrays.asList(usersToAdd) : new ArrayList();
-			Collection containedUsers = usersContained != null ? Arrays.asList(usersContained) : new ArrayList();
+			Collection addUsers = usersToAdd != null ? ListUtil.convertStringArrayToList(usersToAdd) : new ArrayList();
+			Collection containedUsers = usersContained != null ? ListUtil.convertStringArrayToList(usersContained) : new ArrayList();
 			
 			Collection removeUsers = new ArrayList(containedUsers);
 			removeUsers.removeAll(addUsers);
