@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBusinessBean.java,v 1.10 2005/03/20 11:02:29 eiki Exp $
+ * $Id: ApplicationsBusinessBean.java,v 1.11 2005/06/16 12:34:42 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -28,10 +28,10 @@ import com.idega.user.data.Group;
 import com.idega.user.data.User;
 
 /**
- * Last modified: $Date: 2005/03/20 11:02:29 $ by $Author: eiki $
+ * Last modified: $Date: 2005/06/16 12:34:42 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class ApplicationsBusinessBean extends CaseBusinessBean implements ApplicationsBusiness {
 
@@ -66,6 +66,31 @@ public class ApplicationsBusinessBean extends CaseBusinessBean implements Applic
 			}
 		}
 		return null;
+	}
+	
+	public boolean isSupervisor(User user) {
+		Group parish = getUserParish(user);
+		if (parish != null) {
+			Collection supervisorGroups = parish.getChildGroups(new String[]{AguraConstants.GROUP_TYPE_SUPERVISOR}, true);
+			Iterator iter = supervisorGroups.iterator();
+			while (iter.hasNext()) {
+				Group group = (Group) iter.next();
+				try {
+					Collection users = getUserBusiness().getUsersInGroup(group);
+					Iterator iterator = users.iterator();
+					while (iterator.hasNext()) {
+						User groupUser = (User) iterator.next();
+						if (user.equals(groupUser)) {
+							return true;
+						}
+					}
+				}
+				catch (RemoteException re) {
+					throw new IBORuntimeException(re);
+				}
+			}
+		}
+		return false;
 	}
 	
 	public Collection getNotifiableUserCases(User user) {

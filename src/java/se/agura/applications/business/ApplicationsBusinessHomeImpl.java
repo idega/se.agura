@@ -1,6 +1,6 @@
 /*
- * $Id: ApplicationsBusinessHomeImpl.java,v 1.4 2005/02/14 10:57:56 laddi Exp $
- * Created on 14.2.2005
+ * $Id: ApplicationsBusinessHomeImpl.java,v 1.5 2005/06/16 12:34:42 laddi Exp $
+ * Created on Jun 16, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  *
@@ -9,17 +9,14 @@
  */
 package se.agura.applications.business;
 
-
-
-
 import com.idega.business.IBOHomeImpl;
 
 
 /**
- * Last modified: $Date: 2005/02/14 10:57:56 $ by $Author: laddi $
+ * Last modified: $Date: 2005/06/16 12:34:42 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.4 $
+ * @version $Revision: 1.5 $
  */
 public class ApplicationsBusinessHomeImpl extends IBOHomeImpl implements ApplicationsBusinessHome {
 
@@ -30,5 +27,4 @@ public class ApplicationsBusinessHomeImpl extends IBOHomeImpl implements Applica
 	public ApplicationsBusiness create() throws javax.ejb.CreateException {
 		return (ApplicationsBusiness) super.createIBO();
 	}
-
 }

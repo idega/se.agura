@@ -1,5 +1,5 @@
 /*
- * $Id: GroupCases.java,v 1.10 2005/02/14 14:01:16 laddi Exp $
+ * $Id: GroupCases.java,v 1.11 2005/06/16 12:34:42 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -21,6 +21,7 @@ import com.idega.block.process.business.CaseCodeManager;
 import com.idega.block.process.data.Case;
 import com.idega.block.process.data.CaseStatus;
 import com.idega.business.IBOLookupException;
+import com.idega.business.IBORuntimeException;
 import com.idega.core.builder.data.ICPage;
 import com.idega.presentation.CollectionNavigator;
 import com.idega.presentation.IWContext;
@@ -35,10 +36,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/02/14 14:01:16 $ by $Author: laddi $
+ * Last modified: $Date: 2005/06/16 12:34:42 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.10 $
+ * @version $Revision: 1.11 $
  */
 public class GroupCases extends UserCases {
 	
@@ -50,9 +51,15 @@ public class GroupCases extends UserCases {
 	public void present(IWContext iwc) {
 		if (iwc.isLoggedOn()) {
 			User user = iwc.getCurrentUser();
-			Group parent = user.getPrimaryGroup();
+			boolean isSupervisor = false;
+			try {
+				isSupervisor = getBusiness(iwc).isSupervisor(user);
+			}
+			catch (RemoteException re) {
+				throw new IBORuntimeException(re);
+			}
 			
-			if (parent != null && !parent.getGroupType().equals(AguraConstants.GROUP_TYPE_EMPLOYEES) && !parent.getGroupType().equals(AguraConstants.GROUP_TYPE_SUBSTITUTES)) {
+			if (isSupervisor) {
 				Text headline = new Text(getResourceBundle().getLocalizedString("applications.group_cases", "Group cases"));
 				if (iHeadlineStyleClass != null) {
 					headline.setStyleClass(iHeadlineStyleClass);
