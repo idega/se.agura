@@ -1,5 +1,5 @@
 /*
- * $Id: GroupCases.java,v 1.11 2005/06/16 12:34:42 laddi Exp $
+ * $Id: GroupCases.java,v 1.12 2005/06/16 12:35:30 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -13,9 +13,6 @@ import java.rmi.RemoteException;
 import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Iterator;
-
-import se.agura.AguraConstants;
-
 import com.idega.block.process.business.CaseBusiness;
 import com.idega.block.process.business.CaseCodeManager;
 import com.idega.block.process.data.Case;
@@ -29,17 +26,16 @@ import com.idega.presentation.Table;
 import com.idega.presentation.text.Break;
 import com.idega.presentation.text.Link;
 import com.idega.presentation.text.Text;
-import com.idega.user.data.Group;
 import com.idega.user.data.User;
 import com.idega.util.IWTimestamp;
 
 
 
 /**
- * Last modified: $Date: 2005/06/16 12:34:42 $ by $Author: laddi $
+ * Last modified: $Date: 2005/06/16 12:35:30 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class GroupCases extends UserCases {
 	
