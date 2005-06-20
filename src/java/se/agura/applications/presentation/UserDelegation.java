@@ -1,5 +1,5 @@
 /*
- * $Id: UserDelegation.java,v 1.11 2005/06/16 14:42:50 anna Exp $
+ * $Id: UserDelegation.java,v 1.12 2005/06/20 11:17:39 laddi Exp $
  * Created on 19.1.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -11,14 +11,10 @@ package se.agura.applications.presentation;
 
 import java.rmi.RemoteException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Collection;
 import java.util.Iterator;
-
 import javax.ejb.RemoveException;
-
 import se.agura.AguraConstants;
-
 import com.idega.presentation.IWContext;
 import com.idega.presentation.Image;
 import com.idega.presentation.Table;
@@ -34,10 +30,10 @@ import com.idega.util.ListUtil;
 
 
 /**
- * Last modified: $Date: 2005/06/16 14:42:50 $ by $Author: anna $
+ * Last modified: $Date: 2005/06/20 11:17:39 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.11 $
+ * @version $Revision: 1.12 $
  */
 public class UserDelegation extends ApplicationsBlock {
 
