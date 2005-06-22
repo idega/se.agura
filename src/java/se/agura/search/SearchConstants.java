@@ -1,5 +1,5 @@
 /*
- * $Id: SearchConstants.java,v 1.2 2005/03/20 20:44:32 eiki Exp $
+ * $Id: SearchConstants.java,v 1.3 2005/06/22 18:05:19 eiki Exp $
  * Created on Mar 18, 2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -23,8 +23,8 @@ public interface SearchConstants {
 	public static final String DOCUMENT_SEARCH_WORD_PARAMETER_NAME = "doc_s_word";
 	public static final String DOCUMENT_TYPE_PARAMETER_NAME = "doc_type";
 	public static final String DOCUMENT_ORDERING_PARAMETER_NAME = "doc_order";
-	public static final String DOCUMENT_ORDERING_BY_DATE = "doc_order_date";
-	public static final String DOCUMENT_ORDERING_BY_NAME = "doc_order_name";
-	public static final String DOCUMENT_ORDERING_BY_SIZE = "doc_order_size";
+	public static final String DOCUMENT_ORDERING_BY_DATE = "getlastmodified";
+	public static final String DOCUMENT_ORDERING_BY_NAME = "displayname";
+	public static final String DOCUMENT_ORDERING_BY_SIZE = "getcontentlength";
 	
 }
