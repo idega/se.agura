@@ -1,5 +1,5 @@
 /*
- * $Id: DetailedSearch.java,v 1.7 2005/05/14 14:34:01 laddi Exp $ Created on Mar 16, 2005
+ * $Id: DetailedSearch.java,v 1.8 2005/06/22 16:40:51 eiki Exp $ Created on Mar 16, 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  * 
@@ -53,8 +53,8 @@ public class DetailedSearch extends Block implements SearchConstants{
 		addContactSearch(iwc);
 		addBreak();
 		//document search temporarely disabled
-//		addDocumentSearch(iwc);
-//		addBreak();
+		addDocumentSearch(iwc);
+		addBreak();
 		addResults(iwc);
 	}
 
@@ -84,7 +84,7 @@ public class DetailedSearch extends Block implements SearchConstants{
 
 	}
 
-	/*
+	
 	private void addDocumentSearch(IWContext iwc) {
 		// TODO wrap in a block
 		add(getHeader(getLocalizedString("documentsearch.text", "Search for documents on the intranet", iwc)));
@@ -133,7 +133,7 @@ public class DetailedSearch extends Block implements SearchConstants{
 		form.add(getButton(new SubmitButton(getLocalizedString("search", "search", iwc))));
 		add(form);
 	}
-	*/
+	
 
 	private void addContactSearch(IWContext iwc) {
 		// TODO wrap in a block
