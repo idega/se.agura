@@ -1,5 +1,5 @@
 /*
- * $Id: ParishUserContactSearchPlugin.java,v 1.5 2005/05/05 23:19:57 eiki Exp $
+ * $Id: ParishUserContactSearchPlugin.java,v 1.6 2005/07/01 15:42:59 eiki Exp $
  * Created on Mar 18, 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -44,13 +44,13 @@ import com.idega.user.data.UserStatus;
 /**
  * 
  * 
- * Last modified: $Date: 2005/05/05 23:19:57 $ by $Author: eiki $
+ * Last modified: $Date: 2005/07/01 15:42:59 $ by $Author: eiki $
  * 
  * Extends the UserContactSearch to support AdvancedSearchQueries. Searches
  * parishes for user contact info by workplace,profession, name etc.
  * 
  * @author <a href="mailto:eiki@idega.com">Eirikur S. Hrafnsson</a>
- * @version $Revision: 1.5 $
+ * @version $Revision: 1.6 $
  */
 public class ParishUserContactSearchPlugin extends UserContactSearch implements SearchPlugin, SearchConstants {
 
@@ -131,6 +131,8 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 						parishans.retainAll(users);
 					}
 					users = parishans;
+					
+					anyOtherSearchParameterSet = true;
 				}
 				catch (NumberFormatException e) {
 					// e.printStackTrace();
@@ -145,7 +147,7 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 			}
 			String professionStatusId = (String) searchQuery.getSearchParameters().get(
 					CONTACT_PROFESSION_PARAMETER_NAME);
-			if (professionStatusId != null && !"default_key".equals(professionStatusId)) {
+			if (professionStatusId != null && !"default_key".equals(professionStatusId) && !"".equals(professionStatusId)) {
 				try {
 					Collection usersWithStatus = getUserStatusBusiness().getAllUsersWithStatus(
 							Integer.parseInt(professionStatusId));
@@ -192,9 +194,10 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 			
 			if (childGroups != null && !childGroups.isEmpty()) {
 				Iterator iter = childGroups.iterator();
+				currentLevel++;
 				while (iter.hasNext()) {
 					Group group = (Group) iter.next();
-					totalUsers = addUsersFromChildGroups(group,totalUsers,++currentLevel,finalLevel);
+					totalUsers = addUsersFromChildGroups(group,totalUsers,currentLevel,finalLevel);
 				}
 			}
 		
