@@ -1,5 +1,5 @@
 /*
- * $Id: UserCaseNotifier.java,v 1.2 2005/01/11 10:04:25 laddi Exp $
+ * $Id: UserCaseNotifier.java,v 1.3 2005/10/16 19:24:09 malin Exp $
  * Created on 13.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -29,10 +29,10 @@ import com.idega.presentation.text.Link;
 
 
 /**
- * Last modified: $Date: 2005/01/11 10:04:25 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/16 19:24:09 $ by $Author: malin $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.2 $
+ * @version $Revision: 1.3 $
  */
 public class UserCaseNotifier extends ApplicationsBlock {
 
@@ -85,7 +85,7 @@ public class UserCaseNotifier extends ApplicationsBlock {
 				ICPage page = getPage(code.getCode());
 				if (page != null) {
 					Link link = getLink(getResourceBundle().getLocalizedString("case_notifier." + code.getCode() + "." + status.getStatus(), "Your application for " + code.getDescription() + " has been " + status.getDescription()));
-					String parameter = caseBusiness.getPrimaryKeyParameter();
+					String parameter = caseBusiness.getSelectedCaseParameter();
 					if (parameter != null) {
 						link.addParameter(parameter, element.getPrimaryKey().toString());
 					}
