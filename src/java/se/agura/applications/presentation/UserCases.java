@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.7 2005/01/19 09:18:19 laddi Exp $
+ * $Id: UserCases.java,v 1.8 2005/10/17 06:52:08 malin Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -36,10 +36,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/01/19 09:18:19 $ by $Author: laddi $
+ * Last modified: $Date: 2005/10/17 06:52:08 $ by $Author: malin $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class UserCases extends ApplicationsBlock implements IWPageEventListener {
 
@@ -106,7 +106,8 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 				ICPage page = getPage(code, status);
 				if (page != null) {
 					Link link = getLink(element.getPrimaryKey().toString());
-					String parameter = caseBusiness.getPrimaryKeyParameter();
+					//String parameter = caseBusiness.getPrimaryKeyParameter();
+					String parameter = caseBusiness.getSelectedCaseParameter();
 					if (parameter != null) {
 						link.addParameter(parameter, element.getPrimaryKey().toString());
 					}
