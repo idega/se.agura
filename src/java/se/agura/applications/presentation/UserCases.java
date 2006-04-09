@@ -1,5 +1,5 @@
 /*
- * $Id: UserCases.java,v 1.8 2005/10/17 06:52:08 malin Exp $
+ * $Id: UserCases.java,v 1.9 2006/04/09 11:47:23 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -36,10 +36,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/10/17 06:52:08 $ by $Author: malin $
+ * Last modified: $Date: 2006/04/09 11:47:23 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.8 $
+ * @version $Revision: 1.9 $
  */
 public class UserCases extends ApplicationsBlock implements IWPageEventListener {
 
@@ -66,15 +66,15 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 		CollectionNavigator navigator = getCollectionNavigator(iwc);
 		
 		Table outerTable = new Table(1, 3);
-		outerTable.setWidth(iWidth);
+		outerTable.setWidth(this.iWidth);
 		outerTable.setCellpadding(0);
 		outerTable.setCellspacing(0);
 		outerTable.add(navigator, 1, 1);
 		outerTable.setHeight(2, 6);
 		
 		Table table = new Table();
-		table.setWidth(iWidth);
-		table.setCellpadding(iCellpadding);
+		table.setWidth(this.iWidth);
+		table.setCellpadding(this.iCellpadding);
 		table.setCellspacing(0);
 		outerTable.add(table, 1, 3);
 		int column = 1;
@@ -84,8 +84,8 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 		table.add(getHeader(getResourceBundle().getLocalizedString("applications.type", "Type")), column++, row);
 		table.add(getHeader(getResourceBundle().getLocalizedString("applications.date", "Date")), column++, row);
 		table.add(getHeader(getResourceBundle().getLocalizedString("applications.status", "Status")), column++, row);
-		if (iHeaderRowStyleClass != null) {
-			table.setRowStyleClass(row, iHeaderRowStyleClass);
+		if (this.iHeaderRowStyleClass != null) {
+			table.setRowStyleClass(row, this.iHeaderRowStyleClass);
 		}
 		
 		int startingEntry = navigator.getStart(iwc);
@@ -123,8 +123,8 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 				table.add(getText(created.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), column++, row);
 				table.add(getText(caseBusiness.getLocalizedCaseStatusDescription(caseStatus, iwc.getCurrentLocale())), column++, row);
 				
-				if (iTextRowStyleClass != null) {
-					table.setRowStyleClass(row, iTextRowStyleClass);
+				if (this.iTextRowStyleClass != null) {
+					table.setRowStyleClass(row, this.iTextRowStyleClass);
 				}
 			}
 			catch (IBOLookupException ile) {
@@ -159,13 +159,13 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 		CollectionNavigator navigator = new CollectionNavigator(size);
 		navigator.setPadding(0);
 		navigator.setUseShortText(true);
-		navigator.setNumberOfEntriesPerPage(iNumberOfEntries);
-		navigator.setWidth(iWidth);
-		if (iTextStyleClass != null) {
-			navigator.setTextStyle(iTextStyleClass);
+		navigator.setNumberOfEntriesPerPage(this.iNumberOfEntries);
+		navigator.setWidth(this.iWidth);
+		if (this.iTextStyleClass != null) {
+			navigator.setTextStyle(this.iTextStyleClass);
 		}
-		if (iLinkStyleClass != null) {
-			navigator.setLinkStyle(iLinkStyleClass);
+		if (this.iLinkStyleClass != null) {
+			navigator.setLinkStyle(this.iLinkStyleClass);
 		}
 		
 		return navigator;
@@ -190,7 +190,7 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 
 	protected Collection getCases(IWContext iwc, int startingEntry) {
 		try {
-			return getBusiness(iwc).getUserCases(iwc.getCurrentUser(), getSession(iwc).getViewType(), startingEntry, iNumberOfEntries);
+			return getBusiness(iwc).getUserCases(iwc.getCurrentUser(), getSession(iwc).getViewType(), startingEntry, this.iNumberOfEntries);
 		}
 		catch (RemoteException re) {
 			log(re);
@@ -209,8 +209,8 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 	}
 	
 	protected ICPage getPage(String caseCode, String caseStatus) {
-		if (pageMap != null) {
-			Map statusMap = (Map) pageMap.get(caseCode);
+		if (this.pageMap != null) {
+			Map statusMap = (Map) this.pageMap.get(caseCode);
 			if (statusMap != null) {
 				return (ICPage) statusMap.get(caseStatus);
 			}
@@ -219,16 +219,16 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 	}
 	
 	public void setPage(String caseCode, String caseStatus, ICPage page) {
-		if (pageMap == null) {
-			pageMap = new HashMap();
+		if (this.pageMap == null) {
+			this.pageMap = new HashMap();
 		}
 		
-		Map statusMap = (Map) pageMap.get(caseCode);
+		Map statusMap = (Map) this.pageMap.get(caseCode);
 		if (statusMap == null) {
 			statusMap = new HashMap();
 		}
 		statusMap.put(caseStatus, page);
-		pageMap.put(caseCode, statusMap);
+		this.pageMap.put(caseCode, statusMap);
 	}
 	
 	/* (non-Javadoc)
@@ -249,20 +249,20 @@ public class UserCases extends ApplicationsBlock implements IWPageEventListener 
 	 * @param numberOfEntries The numberOfEntries to set.
 	 */
 	public void setNumberOfEntries(int numberOfEntries) {
-		iNumberOfEntries = numberOfEntries;
+		this.iNumberOfEntries = numberOfEntries;
 	}
 	
 	/**
 	 * @param headerRowStyleClass The headerRowStyleClass to set.
 	 */
 	public void setHeaderRowStyleClass(String headerRowStyleClass) {
-		iHeaderRowStyleClass = headerRowStyleClass;
+		this.iHeaderRowStyleClass = headerRowStyleClass;
 	}
 	
 	/**
 	 * @param textRowStyleClass The textRowStyleClass to set.
 	 */
 	public void setTextRowStyleClass(String textRowStyleClass) {
-		iTextRowStyleClass = textRowStyleClass;
+		this.iTextRowStyleClass = textRowStyleClass;
 	}
 }

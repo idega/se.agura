@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsSessionBean.java,v 1.1 2004/12/08 16:02:34 laddi Exp $
+ * $Id: ApplicationsSessionBean.java,v 1.2 2006/04/09 11:47:23 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -18,10 +18,10 @@ import com.idega.business.IBOSessionBean;
 
 
 /**
- * Last modified: $Date: 2004/12/08 16:02:34 $ by $Author: laddi $
+ * Last modified: $Date: 2006/04/09 11:47:23 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.1 $
+ * @version $Revision: 1.2 $
  */
 public class ApplicationsSessionBean extends IBOSessionBean  implements ApplicationsSession{
 
@@ -40,21 +40,21 @@ public class ApplicationsSessionBean extends IBOSessionBean  implements Applicat
 	 * @return Returns the viewType.
 	 */
 	public String getViewType() {
-		if (iViewType == null) {
+		if (this.iViewType == null) {
 			try {
-				iViewType = getBusiness().getViewTypeActive();
+				this.iViewType = getBusiness().getViewTypeActive();
 			}
 			catch (RemoteException re) {
 				log(re);
 			}
 		}
-		return iViewType;
+		return this.iViewType;
 	}
 	
 	/**
 	 * @param viewType The viewType to set.
 	 */
 	public void setViewType(String viewType) {
-		iViewType = viewType;
+		this.iViewType = viewType;
 	}
 }

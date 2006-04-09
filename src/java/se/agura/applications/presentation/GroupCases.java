@@ -1,5 +1,5 @@
 /*
- * $Id: GroupCases.java,v 1.13 2005/10/16 19:25:37 malin Exp $
+ * $Id: GroupCases.java,v 1.14 2006/04/09 11:47:23 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -32,10 +32,10 @@ import com.idega.util.IWTimestamp;
 
 
 /**
- * Last modified: $Date: 2005/10/16 19:25:37 $ by $Author: malin $
+ * Last modified: $Date: 2006/04/09 11:47:23 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.13 $
+ * @version $Revision: 1.14 $
  */
 public class GroupCases extends UserCases {
 	
@@ -57,8 +57,8 @@ public class GroupCases extends UserCases {
 			
 			if (isSupervisor) {
 				Text headline = new Text(getResourceBundle().getLocalizedString("applications.group_cases", "Group cases"));
-				if (iHeadlineStyleClass != null) {
-					headline.setStyleClass(iHeadlineStyleClass);
+				if (this.iHeadlineStyleClass != null) {
+					headline.setStyleClass(this.iHeadlineStyleClass);
 				}
 				add(headline);
 				add(new Break(2));
@@ -76,15 +76,15 @@ public class GroupCases extends UserCases {
 		int numberOfCases = cases.size();
 		if (numberOfCases > 0) {
 			Table outerTable = new Table(1, 3);
-			outerTable.setWidth(iWidth);
+			outerTable.setWidth(this.iWidth);
 			outerTable.setCellpadding(0);
 			outerTable.setCellspacing(0);
 			outerTable.add(navigator, 1, 1);
 			outerTable.setHeight(2, 6);
 			
 			Table table = new Table();
-			table.setWidth(iWidth);
-			table.setCellpadding(iCellpadding);
+			table.setWidth(this.iWidth);
+			table.setCellpadding(this.iCellpadding);
 			table.setCellspacing(0);
 			outerTable.add(table, 1, 3);
 			int column = 1;
@@ -95,8 +95,8 @@ public class GroupCases extends UserCases {
 			table.add(getHeader(getResourceBundle().getLocalizedString("applications.user", "User")), column++, row);
 			table.add(getHeader(getResourceBundle().getLocalizedString("applications.date", "Date")), column++, row);
 			table.add(getHeader(getResourceBundle().getLocalizedString("applications.status", "Status")), column++, row);
-			if (iHeaderRowStyleClass != null) {
-				table.setRowStyleClass(row, iHeaderRowStyleClass);
+			if (this.iHeaderRowStyleClass != null) {
+				table.setRowStyleClass(row, this.iHeaderRowStyleClass);
 			}
 			
 			Iterator iter = cases.iterator();
@@ -134,8 +134,8 @@ public class GroupCases extends UserCases {
 					table.add(getText(created.getLocaleDate(iwc.getCurrentLocale(), IWTimestamp.SHORT)), column++, row);
 					table.add(getText(caseBusiness.getLocalizedCaseStatusDescription(caseStatus, iwc.getCurrentLocale())), column++, row);
 					
-					if (iTextRowStyleClass != null) {
-						table.setRowStyleClass(row, iTextRowStyleClass);
+					if (this.iTextRowStyleClass != null) {
+						table.setRowStyleClass(row, this.iTextRowStyleClass);
 					}
 				}
 				catch (IBOLookupException ile) {
@@ -161,7 +161,7 @@ public class GroupCases extends UserCases {
 			User user = iwc.getCurrentUser();
 			Collection groups = getUserBusiness(iwc).getUserGroupsDirectlyRelated(user);
 			if (groups != null) {
-				return getBusiness(iwc).getGroupCases(groups, getSession(iwc).getViewType(), startingEntry, iNumberOfEntries);
+				return getBusiness(iwc).getGroupCases(groups, getSession(iwc).getViewType(), startingEntry, this.iNumberOfEntries);
 			}
 			return new ArrayList();
 		}
@@ -191,6 +191,6 @@ public class GroupCases extends UserCases {
 	}
 	
 	public void setHeadlineStyleClass(String headlineStyleClass) {
-		iHeadlineStyleClass = headlineStyleClass;
+		this.iHeadlineStyleClass = headlineStyleClass;
 	}
 }

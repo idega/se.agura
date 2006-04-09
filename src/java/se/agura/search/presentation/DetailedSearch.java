@@ -1,5 +1,5 @@
 /*
- * $Id: DetailedSearch.java,v 1.8 2005/06/22 16:40:51 eiki Exp $ Created on Mar 16, 2005
+ * $Id: DetailedSearch.java,v 1.9 2006/04/09 11:47:23 laddi Exp $ Created on Mar 16, 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
  * 
@@ -61,8 +61,8 @@ public class DetailedSearch extends Block implements SearchConstants{
 	private void addResults(IWContext iwc) {
 		SearchResults results = new SearchResults();
 		PrintButton print = new PrintButton();
-		if (buttonStyleClass != null) {
-			print.setStyleClass(buttonStyleClass);
+		if (this.buttonStyleClass != null) {
+			print.setStyleClass(this.buttonStyleClass);
 		}
 		
 		if(iwc.isParameterSet(DOCUMENT_SEARCH)){
@@ -189,8 +189,8 @@ public class DetailedSearch extends Block implements SearchConstants{
 	}
 
 	protected InterfaceObject getInput(InterfaceObject input) {
-		if (inputStyleClass != null) {
-			input.setStyleClass(inputStyleClass);
+		if (this.inputStyleClass != null) {
+			input.setStyleClass(this.inputStyleClass);
 		}
 		return input;
 	}
@@ -212,7 +212,7 @@ public class DetailedSearch extends Block implements SearchConstants{
 	 * @return Returns the buttonStyleClass.
 	 */
 	public String getButtonStyleClass() {
-		return buttonStyleClass;
+		return this.buttonStyleClass;
 	}
 
 	/**
@@ -227,7 +227,7 @@ public class DetailedSearch extends Block implements SearchConstants{
 	 * @return Returns the headerStyleClass.
 	 */
 	public String getHeaderStyleClass() {
-		return headerStyleClass;
+		return this.headerStyleClass;
 	}
 
 	/**
@@ -242,7 +242,7 @@ public class DetailedSearch extends Block implements SearchConstants{
 	 * @return Returns the inputStyleClass.
 	 */
 	public String getInputStyleClass() {
-		return inputStyleClass;
+		return this.inputStyleClass;
 	}
 
 	/**
@@ -257,7 +257,7 @@ public class DetailedSearch extends Block implements SearchConstants{
 	 * @return Returns the textStyleClass.
 	 */
 	public String getTextStyleClass() {
-		return textStyleClass;
+		return this.textStyleClass;
 	}
 
 	/**
@@ -270,23 +270,23 @@ public class DetailedSearch extends Block implements SearchConstants{
 
 	protected Text getText(String string) {
 		Text text = new Text(string);
-		if (textStyleClass != null) {
-			text.setStyleClass(textStyleClass);
+		if (this.textStyleClass != null) {
+			text.setStyleClass(this.textStyleClass);
 		}
 		return text;
 	}
 
 	protected Text getHeader(String string) {
 		Text text = new Text(string);
-		if (headerStyleClass != null) {
-			text.setStyleClass(headerStyleClass);
+		if (this.headerStyleClass != null) {
+			text.setStyleClass(this.headerStyleClass);
 		}
 		return text;
 	}
 
 	protected GenericButton getButton(GenericButton button) {
-		if (buttonStyleClass != null) {
-			button.setStyleClass(buttonStyleClass);
+		if (this.buttonStyleClass != null) {
+			button.setStyleClass(this.buttonStyleClass);
 		}
 		return button;
 	}

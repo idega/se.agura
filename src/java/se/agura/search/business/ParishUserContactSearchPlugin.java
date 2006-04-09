@@ -1,5 +1,5 @@
 /*
- * $Id: ParishUserContactSearchPlugin.java,v 1.6 2005/07/01 15:42:59 eiki Exp $
+ * $Id: ParishUserContactSearchPlugin.java,v 1.7 2006/04/09 11:47:23 laddi Exp $
  * Created on Mar 18, 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -44,13 +44,13 @@ import com.idega.user.data.UserStatus;
 /**
  * 
  * 
- * Last modified: $Date: 2005/07/01 15:42:59 $ by $Author: eiki $
+ * Last modified: $Date: 2006/04/09 11:47:23 $ by $Author: laddi $
  * 
  * Extends the UserContactSearch to support AdvancedSearchQueries. Searches
  * parishes for user contact info by workplace,profession, name etc.
  * 
  * @author <a href="mailto:eiki@idega.com">Eirikur S. Hrafnsson</a>
- * @version $Revision: 1.6 $
+ * @version $Revision: 1.7 $
  */
 public class ParishUserContactSearchPlugin extends UserContactSearch implements SearchPlugin, SearchConstants {
 
@@ -63,8 +63,8 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 		super();
 		IWMainApplication iwma = IWMainApplication.getDefaultIWMainApplication();
 		IWContext iwc = IWContext.getInstance();
-		iwrb = iwma.getBundle(IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc);
-		userIwrb = iwma.getBundle(USER_IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc);
+		this.iwrb = iwma.getBundle(IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc);
+		this.userIwrb = iwma.getBundle(USER_IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc);
 	}
 
 	/*
@@ -213,7 +213,7 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 	 */
 	protected Collection doSimpleSearch(Collection users, String searchWord) {
 		try {
-			SearchEngine userSearch = (SearchEngine) IBOLookup.getServiceInstance(iwma.getIWApplicationContext(),
+			SearchEngine userSearch = (SearchEngine) IBOLookup.getServiceInstance(this.iwma.getIWApplicationContext(),
 					SearchEngine.class);
 			searchWord = searchWord.replace('*', '%');
 			users = userSearch.getSimpleSearchResults(searchWord);
@@ -274,7 +274,7 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 			Phone p = getUserBusiness().getUsersWorkPhone(user);
 			String number = p.getNumber();
 			if(number!=null && !"null".equalsIgnoreCase(number)){
-				map.put("workphone", iwrb.getLocalizedString("parish.usercontact.search.work", "work") + ": "
+				map.put("workphone", this.iwrb.getLocalizedString("parish.usercontact.search.work", "work") + ": "
 						+ number);
 			}
 		}
@@ -293,7 +293,7 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 			Phone p = getUserBusiness().getUsersMobilePhone(user);
 			String number = p.getNumber();
 			if(number!=null && !"null".equalsIgnoreCase(number)){
-				map.put("mobile", iwrb.getLocalizedString("parish.usercontact.search.mobile", "mobile") + ": "
+				map.put("mobile", this.iwrb.getLocalizedString("parish.usercontact.search.mobile", "mobile") + ": "
 						+ number);
 			}
 		}
@@ -320,7 +320,7 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 				}
 			}
 			String statusKey = status.getStatus().getStatusKey();
-			map.put("profession", userIwrb.getLocalizedString(statusKey, statusKey));
+			map.put("profession", this.userIwrb.getLocalizedString(statusKey, statusKey));
 		}
 	}
 

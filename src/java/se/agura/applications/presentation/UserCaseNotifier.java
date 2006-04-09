@@ -1,5 +1,5 @@
 /*
- * $Id: UserCaseNotifier.java,v 1.3 2005/10/16 19:24:09 malin Exp $
+ * $Id: UserCaseNotifier.java,v 1.4 2006/04/09 11:47:23 laddi Exp $
  * Created on 13.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -29,10 +29,10 @@ import com.idega.presentation.text.Link;
 
 
 /**
- * Last modified: $Date: 2005/10/16 19:24:09 $ by $Author: malin $
+ * Last modified: $Date: 2006/04/09 11:47:23 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public class UserCaseNotifier extends ApplicationsBlock {
 
@@ -73,7 +73,7 @@ public class UserCaseNotifier extends ApplicationsBlock {
 			throw new IBORuntimeException(re);
 		}
 		
-		table.setCellpadding(iCellpadding);
+		table.setCellpadding(this.iCellpadding);
 		Iterator iter = cases.iterator();
 		while (iter.hasNext()) {
 			Case element = (Case) iter.next();
@@ -107,16 +107,16 @@ public class UserCaseNotifier extends ApplicationsBlock {
 	}
 	
 	private ICPage getPage(String code) {
-		if (iCodeMap != null) {
-			return (ICPage) iCodeMap.get(code);
+		if (this.iCodeMap != null) {
+			return (ICPage) this.iCodeMap.get(code);
 		}
 		return null;
 	}
 	
 	public void setPage(String code, ICPage page) {
-		if (iCodeMap == null) {
-			iCodeMap = new HashMap();
+		if (this.iCodeMap == null) {
+			this.iCodeMap = new HashMap();
 		}
-		iCodeMap.put(code, page);
+		this.iCodeMap.put(code, page);
 	}
 }

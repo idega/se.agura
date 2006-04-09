@@ -1,5 +1,5 @@
 /*
- * $Id: ApplicationsBlock.java,v 1.3 2005/01/12 10:00:13 laddi Exp $
+ * $Id: ApplicationsBlock.java,v 1.4 2006/04/09 11:47:23 laddi Exp $
  * Created on 7.12.2004
  *
  * Copyright (C) 2004 Idega Software hf. All Rights Reserved.
@@ -32,10 +32,10 @@ import com.idega.user.business.UserBusiness;
 
 
 /**
- * Last modified: $Date: 2005/01/12 10:00:13 $ by $Author: laddi $
+ * Last modified: $Date: 2006/04/09 11:47:23 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.3 $
+ * @version $Revision: 1.4 $
  */
 public abstract class ApplicationsBlock extends Block {
 
@@ -57,8 +57,8 @@ public abstract class ApplicationsBlock extends Block {
 	protected int iHeaderColumnWidth = 150;
 
 	public void main(IWContext iwc) {
-		iwb = getBundle(iwc);
-		iwrb = getResourceBundle(iwc);
+		this.iwb = getBundle(iwc);
+		this.iwrb = getResourceBundle(iwc);
 		
 		present(iwc);
 	}
@@ -94,60 +94,60 @@ public abstract class ApplicationsBlock extends Block {
 
 	protected Text getHeader(String string) {
 		Text text = new Text(string);
-		if (iHeaderStyleClass != null) {
-			text.setStyleClass(iHeaderStyleClass);
+		if (this.iHeaderStyleClass != null) {
+			text.setStyleClass(this.iHeaderStyleClass);
 		}
 		return text;
 	}
 	
 	protected Text getText(String string) {
 		Text text = new Text(string);
-		if (iTextStyleClass != null) {
-			text.setStyleClass(iTextStyleClass);
+		if (this.iTextStyleClass != null) {
+			text.setStyleClass(this.iTextStyleClass);
 		}
 		return text;
 	}
 	
 	protected Text getErrorText(String string) {
 		Text text = new Text(string);
-		if (iErrorTextStyleClass != null) {
-			text.setStyleClass(iErrorTextStyleClass);
+		if (this.iErrorTextStyleClass != null) {
+			text.setStyleClass(this.iErrorTextStyleClass);
 		}
 		return text;
 	}
 	
 	protected Link getLink(String string) {
 		Link link = new Link(string);
-		if (iLinkStyleClass != null) {
-			link.setStyleClass(iLinkStyleClass);
+		if (this.iLinkStyleClass != null) {
+			link.setStyleClass(this.iLinkStyleClass);
 		}
 		return link;
 	}
 	
 	protected InterfaceObject getInput(InterfaceObject input) {
-		if (iInputStyleClass != null) {
-			input.setStyleClass(iInputStyleClass);
+		if (this.iInputStyleClass != null) {
+			input.setStyleClass(this.iInputStyleClass);
 		}
 		return input;
 	}
 	
 	protected GenericButton getButton(GenericButton button) {
-		if (iButtonStyleClass != null) {
-			button.setStyleClass(iButtonStyleClass);
+		if (this.iButtonStyleClass != null) {
+			button.setStyleClass(this.iButtonStyleClass);
 		}
 		return button;
 	}
 	
 	protected RadioButton getRadioButton(RadioButton radioButton) {
-		if (iRadioStyleClass != null) {
-			radioButton.setStyleClass(iRadioStyleClass);
+		if (this.iRadioStyleClass != null) {
+			radioButton.setStyleClass(this.iRadioStyleClass);
 		}
 		return radioButton;
 	}
 	
 	protected CheckBox getCheckBox(CheckBox checkBox) {
-		if (iRadioStyleClass != null) {
-			checkBox.setStyleClass(iRadioStyleClass);
+		if (this.iRadioStyleClass != null) {
+			checkBox.setStyleClass(this.iRadioStyleClass);
 		}
 		return checkBox;
 	}
@@ -163,66 +163,66 @@ public abstract class ApplicationsBlock extends Block {
 	 * @return Returns the iwb.
 	 */
 	protected IWBundle getBundle() {
-		return iwb;
+		return this.iwb;
 	}
 	
 	/**
 	 * @return Returns the iwrb.
 	 */
 	protected IWResourceBundle getResourceBundle() {
-		return iwrb;
+		return this.iwrb;
 	}
 
 	/**
 	 * @param headerStyleClass The headerStyleClass to set.
 	 */
 	public void setHeaderStyleClass(String headerStyleClass) {
-		iHeaderStyleClass = headerStyleClass;
+		this.iHeaderStyleClass = headerStyleClass;
 	}
 	
 	/**
 	 * @param linkStyleClass The linkStyleClass to set.
 	 */
 	public void setLinkStyleClass(String linkStyleClass) {
-		iLinkStyleClass = linkStyleClass;
+		this.iLinkStyleClass = linkStyleClass;
 	}
 
 	/**
 	 * @param textStyleClass The textStyleClass to set.
 	 */
 	public void setTextStyleClass(String textStyleClass) {
-		iTextStyleClass = textStyleClass;
+		this.iTextStyleClass = textStyleClass;
 	}
 	/**
 	 * @param cellpadding The cellpadding to set.
 	 */
 	public void setCellpadding(int cellpadding) {
-		iCellpadding = cellpadding;
+		this.iCellpadding = cellpadding;
 	}
 	/**
 	 * @param width The width to set.
 	 */
 	public void setWidth(String width) {
-		iWidth = width;
+		this.iWidth = width;
 	}
 	
 	public void setErrorTextStyleClass(String errorTextStyleClass) {
-		iErrorTextStyleClass = errorTextStyleClass;
+		this.iErrorTextStyleClass = errorTextStyleClass;
 	}
 	
 	public void setInputStyleClass(String inputStyleClass) {
-		iInputStyleClass = inputStyleClass;
+		this.iInputStyleClass = inputStyleClass;
 	}
 	
 	public void setRadioStyleClass(String radioStyleClass) {
-		iRadioStyleClass = radioStyleClass;
+		this.iRadioStyleClass = radioStyleClass;
 	}
 	
 	public void setButtonStyleClass(String buttonStyleClass) {
-		iButtonStyleClass = buttonStyleClass;
+		this.iButtonStyleClass = buttonStyleClass;
 	}
 	
 	public void setHeaderColumnWidth(int headerColumnWidth) {
-		iHeaderColumnWidth = headerColumnWidth;
+		this.iHeaderColumnWidth = headerColumnWidth;
 	}
 }

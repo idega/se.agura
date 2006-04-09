@@ -138,7 +138,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		Form form = new Form();
 		
 		Table table = new Table();
-		table.setCellpadding(iCellpadding);
+		table.setCellpadding(this.iCellpadding);
 		table.setCellspacing(0);
 		form.add(table);
 		int row = 1;
@@ -275,8 +275,8 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		}
 
 		SubmitButton sbUpdate = null;
-		if (iButtonImage != null) {
-			sbUpdate = new SubmitButton(iButtonImage);
+		if (this.iButtonImage != null) {
+			sbUpdate = new SubmitButton(this.iButtonImage);
 		}
 		else {
 			sbUpdate = (SubmitButton) getButton(new SubmitButton(getResourceBundle().getLocalizedString(KEY_UPDATE, DEFAULT_UPDATE), PARAMETER_FORM_SUBMIT, "true"));
@@ -322,7 +322,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 		row++;
 		table.add(sbUpdate, 1, row);
 		
-		table.setWidth(1, iHeaderColumnWidth);
+		table.setWidth(1, this.iHeaderColumnWidth);
 		table.setCellpaddingLeft(1, 0);
 
 		add(form);
@@ -432,7 +432,7 @@ public class UserAccountPreferences extends ApplicationsBlock {
 	}
 	
 	public void setButtonImage(Image buttonImage) {
-		iButtonImage = buttonImage;
+		this.iButtonImage = buttonImage;
 	}
 	
 	

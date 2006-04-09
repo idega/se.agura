@@ -1,5 +1,5 @@
 /*
- * $Id: UserDelegation.java,v 1.12 2005/06/20 11:17:39 laddi Exp $
+ * $Id: UserDelegation.java,v 1.13 2006/04/09 11:47:23 laddi Exp $
  * Created on 19.1.2005
  *
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -30,10 +30,10 @@ import com.idega.util.ListUtil;
 
 
 /**
- * Last modified: $Date: 2005/06/20 11:17:39 $ by $Author: laddi $
+ * Last modified: $Date: 2006/04/09 11:47:23 $ by $Author: laddi $
  * 
  * @author <a href="mailto:laddi@idega.com">laddi</a>
- * @version $Revision: 1.12 $
+ * @version $Revision: 1.13 $
  */
 public class UserDelegation extends ApplicationsBlock {
 
@@ -73,8 +73,8 @@ public class UserDelegation extends ApplicationsBlock {
 					}
 					
 					SubmitButton submit = null;
-					if (iButtonImage != null) {
-						submit = new SubmitButton(iButtonImage);
+					if (this.iButtonImage != null) {
+						submit = new SubmitButton(this.iButtonImage);
 					}
 					else {
 						submit = (SubmitButton) getButton(new SubmitButton(getResourceBundle().getLocalizedString("delegate", "Delegate")));
@@ -94,7 +94,7 @@ public class UserDelegation extends ApplicationsBlock {
 	
 	private Table getUserTable(Collection users, Group primaryGroup) {
 		Table table = new Table();
-		table.setCellpadding(iCellpadding);
+		table.setCellpadding(this.iCellpadding);
 		table.setCellspacing(0);
 		table.setColumns(2);
 		int row = 1;
@@ -153,6 +153,6 @@ public class UserDelegation extends ApplicationsBlock {
 	}
 	
 	public void setButtonImage(Image buttonImage) {
-		iButtonImage = buttonImage;
+		this.iButtonImage = buttonImage;
 	}
 }
