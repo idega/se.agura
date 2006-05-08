@@ -1,5 +1,5 @@
 /*
- * $Id: ParishUserContactSearchPlugin.java,v 1.7 2006/04/09 11:47:23 laddi Exp $
+ * $Id: ParishUserContactSearchPlugin.java,v 1.8 2006/05/08 13:52:55 laddi Exp $
  * Created on Mar 18, 2005
  * 
  * Copyright (C) 2005 Idega Software hf. All Rights Reserved.
@@ -44,17 +44,17 @@ import com.idega.user.data.UserStatus;
 /**
  * 
  * 
- * Last modified: $Date: 2006/04/09 11:47:23 $ by $Author: laddi $
+ * Last modified: $Date: 2006/05/08 13:52:55 $ by $Author: laddi $
  * 
  * Extends the UserContactSearch to support AdvancedSearchQueries. Searches
  * parishes for user contact info by workplace,profession, name etc.
  * 
  * @author <a href="mailto:eiki@idega.com">Eirikur S. Hrafnsson</a>
- * @version $Revision: 1.7 $
+ * @version $Revision: 1.8 $
  */
 public class ParishUserContactSearchPlugin extends UserContactSearch implements SearchPlugin, SearchConstants {
 
-	protected final static String IW_BUNDLE_IDENTIFIER = "se.agura";
+	protected final static String AGURA_IW_BUNDLE_IDENTIFIER = "se.agura";
 	public static final String USER_IW_BUNDLE_IDENTIFIER = "com.idega.user";
 	IWResourceBundle iwrb;
 	IWResourceBundle userIwrb;
@@ -63,7 +63,7 @@ public class ParishUserContactSearchPlugin extends UserContactSearch implements 
 		super();
 		IWMainApplication iwma = IWMainApplication.getDefaultIWMainApplication();
 		IWContext iwc = IWContext.getInstance();
-		this.iwrb = iwma.getBundle(IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc);
+		this.iwrb = iwma.getBundle(AGURA_IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc);
 		this.userIwrb = iwma.getBundle(USER_IW_BUNDLE_IDENTIFIER).getResourceBundle(iwc);
 	}
 
